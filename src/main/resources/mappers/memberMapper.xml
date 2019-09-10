@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.dao.MemberMapper" >
+
+<!-- 获取组织列表 -->
+<select id="getAllOrganizations"  resultType="java.util.HashMap">
+    select * from t_organization
+</select>
+<!-- 通过组织ID获取组织详情 -->
+ <select id="getOrganizationById" resultType="cn.com.model.Organization">
+    select * from t_organization toz where toz.organizationId = #{organizationId}
+</select>
+<!-- 通过成员ID获取成员信息 -->
+<select id="getMemberById" resultType="cn.com.model.Member">
+    select * from t_member t where t.memberId = #{memberId}
+</select>
+<!-- 通过组织ID获取成员列表 -->
+<select id="getMemberList" resultType="cn.com.model.Member">
+    select * from t_member t where t.organizationId = #{organizationId}
+    <if test="memberType != -1">
+    and memberType = #{memberType}
+    </if>
+    <if test="memberStatus != -1">
+    and memberStatus = #{memberStatus}
+    </if>
+</select>
+<!-- 修改成员信息 -->
+<update id="updateMember" parameterType="java.util.Map">
+	update T_MEMBER set
+		memberNick=#{memberNick}
+		,memberJob=#{memberJob}
+		,memberType=#{memberType}
+		,memberFight=#{memberFight}
+		,memberStatus=#{memberStatus}
+	where memberId = #{memberId}
+</update>
+<!-- 通过成员ID获取成员战力列表 -->
+<select id="getMemberFightList" resultType="java.util.HashMap">
+    select * from t_member_fight tf where tf.memberId = #{memberId}
+    order by tf.endDate desc 
+</select>
+<!-- 修改成员战力信息 -->
+<update id="updateMemberFight" parameterType="java.util.Map">
+	update t_member_fight set
+		memberNowFight=#{memberNowFight}
+	where memberId = #{memberId} and endDate = DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+</update>
+<!-- 更新战力之前一期的战力 -->
+<update id="updateMemberFightLink" parameterType="java.util.Map">
+	update t_member_fight set
+		memberBeginFight=#{memberNowFight}
+	where memberId = #{memberId} and beginDate = DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+</update>
+<!-- 从战力表中获取当前成员最新的战力信息 -->
+<select id="getMemberFightNowById" resultType="cn.com.model.MemberFight">
+    SELECT * FROM (SELECT * FROM t_member_fight WHERE memberId = #{memberId} ORDER BY endDate DESC ) temp LIMIT 0,1
+</select>
+<!-- 更新战力表当前战力 -->
+<update id="updateMemberFightNew" parameterType="java.util.Map">
+	update t_member_fight set
+		memberNowFight=#{memberNowFight}
+	where fightId = #{fightId}
+</update>
+</mapper>

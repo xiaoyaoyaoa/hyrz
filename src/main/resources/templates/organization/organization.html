@@ -1,0 +1,40 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+    <meta charset="UTF-8"/> 
+    <title th:text="${organization.organizationName}+'成员列表'">欢迎</title> 
+</head> 
+<style>
+.member-table th{border:1px solid #FF0033;text-align:center;padding-top:8px;padding-bottom:8px;}
+.member-table td{border:1px solid #ededed;text-align:center;padding-top:8px;padding-bottom:8px;}
+</style>
+<body>
+<div th:replace="common/top::top_bar"></div> 
+组织详情页
+<table class="member-table">
+	<tr>
+		<th width="150">组织名称</th>
+		<th width="150" th:text="${organization.organizationName}"></th>
+	</tr>
+	<tr>
+		<td width="150">组织首领</th>
+		<td width="150" th:text="${organization.currentLeader}"></th>
+	</tr>
+	<tr>
+		<td width="150">组织公告</th>
+		<td width="300" th:text="${organization.notice}"></th>
+	</tr>
+	<tr>
+		<td width="150">是否有效</th>
+		<td width="150" th:text="${organization.status == 0?'无效':'有效'}"></th>
+	</tr>	
+	<tr>
+		<td width="150">操作</th>
+		<td>
+		<a th:href="@{/member/list/}+${organization.organizationId}+'/'" href="javascript:void(0);">人员管理</a>
+		<a th:href="@{/activity/list/}+${organization.organizationId}+'/'" href="javascript:void(0);">活动管理</a>
+		</td>
+	</tr>			
+</table>
+</body> 
+</html>

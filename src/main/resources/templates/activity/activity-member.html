@@ -1,0 +1,15 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+    <meta charset="UTF-8"/> 
+    <title th:text="${organization.organizationName}+'活动列表'">欢迎</title> 
+</head> 
+<style>
+</style>
+<body>
+<div th:replace="common/top::top_bar"></div> 
+<a href="" th:href="@{/organization/index/}+${organization.organizationId}+'/'">组织详情</a>>
+<a href="" th:href="@{/activity/list/}+${organization.organizationId}+'/'">活动列表</a>>
+成员活动管理<br/>
+</body> 
+</html>

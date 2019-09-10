@@ -1,0 +1,64 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+    <meta charset="UTF-8"/> 
+    <title th:text="'编辑成员-'+${member.memberNick}"></title> 
+    <script type="text/javascript" src="../../static/js/jquery-1.7.2.min.js" data-th-src="@{/js/jquery-1.7.2.min.js}"></script>
+</head> 
+<style>
+.member-table th{border:1px solid #FF0033;}
+.member-table td{border:1px solid #ededed;text-align:center;padding-top:8px;padding-bottom:8px;}
+</style>
+<body>
+<div th:replace="common/top::top_bar"></div>
+<a href="" th:href="@{/organization/index/}+${member.organizationId}+'/'">组织详情</a>>
+<a href="" th:href="@{/member/list/}+${member.organizationId}+'/'">人员管理</a>>
+成员战力管理<br/>
+<span style="font-size:18px">当前操作成员：<strong th:text="${member.memberNick}" style="color:blue;"></strong></span>
+<input type="hidden" th:value="${member.memberId}" id="memberId" />
+<form id="fightForm">
+<table class="member-table">
+	<tr>
+		<th width="100">之前战力</th>
+		<th width="100">当前战力</th>
+		<th width="100">战力增幅</th>
+		<th width="200">统计日期</th>
+		<th width="80">操作</th>
+	</tr>
+	<tr data-th-each="memberFight,memberFightStat : ${memberFights}">
+	<input type="hidden" th:id="'endDate_'+${memberFightStat.index}" th:value="${memberFight.endDate}">
+		<td th:text="${memberFight.memberBeginFight}+'万'">--</td>
+		<td ><input type="text"  style="width:50px;" th:id="'memberBeginFightId_'+${memberFightStat.index}" th:value="${memberFight.memberNowFight}">&nbsp;万</td>
+		<td style="color:red;" th:text="${memberFight.memberNowFight-memberFight.memberBeginFight}+'万'">--</td>
+		<td th:text="${#dates.format(memberFight.beginDate,'yyyy-MM-dd')}+'至'+${#dates.format(memberFight.endDate,'yyyy-MM-dd')}">--</td>
+		<td><input type="button" value="修改" th:onclick="'javascript:changeFight('+${memberFightStat.index}+');'" ></td>
+	
+	</tr>
+</table>	
+</form> 	
+</body> 
+<script type="text/javascript">
+var path=$("#path").val();
+function changeFight(index){
+	var url = path+"member/fight/udpate"
+	var memberId = $("#memberId").val();
+	var memberNowFight = $("#memberBeginFightId_"+index).val();
+	var endDate = $("#endDate_"+index).val();
+	$.ajax({
+		url:url,
+		data:{memberId:memberId,memberNowFight:memberNowFight,endDate:endDate},
+		type:"post",
+		dataType:"text",
+		success:function(data){
+			if(data && data == 1){
+				alert("保存成功!");
+				window.location.reload();
+			}
+		},
+		error:function(){
+			alert("系统繁忙,修改失败,请稍后重试!");
+		}
+	});
+}
+</script>
+</html>

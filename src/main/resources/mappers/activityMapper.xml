@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.dao.ActivityMapper" >
+
+<!-- 通过组织ID获取组织活动类型 -->
+ <select id="getActTypeByOrganizationId" resultType="java.util.HashMap">
+    SELECT DISTINCT activityType FROM t_activity WHERE organizationId = #{organizationId} ORDER BY activityType ASC  
+</select>
+<!-- 通过组织ID获取组织活动日期 -->
+ <select id="getActDateByOrganizationId" resultType="java.util.HashMap">
+    SELECT DISTINCT activityDate FROM t_activity where organizationId = #{organizationId} ORDER BY activityDate DESC 
+</select>
+
+<!-- 通过组织ID获取组织活动详情 -->
+ <select id="getActByOrganizationId" resultType="cn.com.model.Activity">
+    SELECT * FROM t_activity WHERE organizationId = #{organizationId} 
+    <if test="activityType != null and activityType != 'all'">
+      and activityType=#{activityType}
+    </if>
+    <if test="activityDate != null and activityDate != 'all'">
+      and activityDate=DATE_FORMAT(#{activityDate}, '%Y-%m-%d')
+    </if>    
+    
+    ORDER BY activityDate DESC,activityType ASC 
+</select>
+<!-- 新增活动记录 -->
+<insert id="saveActivity"  parameterType="cn.com.model.Activity" keyColumn="id" keyProperty="activityId" useGeneratedKeys="true">
+	INSERT INTO t_activity(activityType,activityDate,activityName,organizationId,examine) 
+	VALUES 
+	(
+	#{activityType},
+	#{activityDate},
+	#{activityName},
+	#{organizationId},
+	#{examine}
+	);
+</insert>
+<!-- 通过活动ID获取本服要塞数据 -->
+<select id="getFortsByActivityId"  resultType="java.util.HashMap">
+	SELECT ta.activityDate,ta.examine,tm.memberNick,tm.memberJob,tfs.*,(tfs.huo+tfs.feng+tfs.lei+tfs.tu+tfs.shui) AS 'score' 
+	FROM t_member tm,t_activity ta,t_fort_score tfs WHERE tm.memberId = tfs.memberId AND ta.activityId = tfs.activityId
+	AND ta.activityId = #{activityId}
+</select>
+
+<!-- 通过活动ID获取活动详情 -->
+<select id="getActivityById"  resultType="cn.com.model.Activity">
+	SELECT * FROM t_activity WHERE activityId = #{activityId} 
+</select>
+
+<!-- 更新本服要塞活动记录 -->
+<update id="updateFortScore" parameterType="java.util.Map">
+	update t_fort_score set huo=#{huo},feng=#{feng},lei=#{lei},tu=#{tu},
+		shui=#{shui},tie=#{tie},tian=#{tian},tang=#{tang},wo=#{wo},shuang=#{shuang},
+		yun=#{yun},niao=#{niao},longg=#{longg},chuan=#{chuan},hai=#{hai},yu=#{yu},cao=#{cao},xiong=#{xiong}		
+	where joinId = #{joinId}
+</update>
+<!-- 新增本服要塞活动记录 -->
+<insert id="saveActFortScore"  parameterType="java.util.HashMap">
+	INSERT INTO t_fort_score(activityId,memberId) 
+	VALUES 
+	(
+	#{activityId},
+	#{memberId}
+	);
+</insert>
+
+<!-- 新增跨服要塞活动记录 -->
+<insert id="saveActSpanFortScore"  parameterType="java.util.HashMap">
+	INSERT INTO t_span_fort_score(activityId,memberId) 
+	VALUES 
+	(
+	#{activityId},
+	#{memberId}
+	);
+</insert>
+
+<!-- 通过活动ID获取跨服要塞数据 -->
+<select id="getSpanFortsByActivityId"  resultType="java.util.HashMap">
+	SELECT tm.memberNick,tsfs.* FROM t_span_fort_score tsfs,t_member tm 
+	WHERE tsfs.memberId = tm.memberId 
+	AND tsfs.activityId = #{activityId}
+	order by tsfs.score desc,tsfs.memberId asc  
+</select>
+
+<!-- 更新跨服要塞活动记录 -->
+<update id="updateSpanFortScore" parameterType="java.util.Map">
+	update t_span_fort_score set score=#{score}		
+	where joinId = #{joinId}
+</update>
+
+<!-- 通过活动ID获取战力增长数据 -->
+<select id="getFightByActivityId"  resultType="java.util.HashMap">
+	SELECT tmf.*,tm.memberId,tm.memberNick FROM t_member_fight tmf,t_member tm WHERE tmf.memberId = tm.memberId 
+	AND tm.memberType = 1 AND tm.memberStatus = 1 
+	AND  tmf.activityId = #{activityId}
+	ORDER BY tmf.memberId ASC 
+</select>
+
+
+<!-- 通过活动ID获取活动详情 -->
+<select id="getMemberFightBy7Day"  resultType="cn.com.model.MemberFight">
+		SELECT * FROM t_member_fight WHERE memberId = #{memberId}
+		AND endDate = DATE_SUB( DATE_FORMAT(#{endDate}, '%Y-%m-%d'), INTERVAL 7 DAY)
+</select>
+<!-- 新增战力涨幅活动记录 -->
+<insert id="saveFightScore"  parameterType="java.util.HashMap">
+	INSERT INTO t_member_fight(memberId,memberBeginFight,beginDate,endDate,activityId) 
+	VALUES 
+	(
+	#{memberId},
+	#{memberBeginFight},
+	#{beginDate},
+	#{endDate},
+	#{activityId}
+	);
+</insert>
+</mapper>

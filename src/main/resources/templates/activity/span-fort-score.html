@@ -1,0 +1,78 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+    <meta charset="UTF-8"/> 
+    <title th:text="${organization.organizationName}+'活动列表'">欢迎</title> 
+    <script type="text/javascript" src="../../static/js/jquery-1.7.2.min.js" data-th-src="@{/js/jquery-1.7.2.min.js}"></script>
+    <script type="text/javascript" src="../../static/My97DatePicker/WdatePicker.js" data-th-src="@{/My97DatePicker/WdatePicker.js}"></script>
+</head> 
+<style>
+.table_slider {border: 1px #EDEDED solid;margin: 5px 0;}
+.table_slider {border-collapse: collapse;}
+.table_slider th {height: 35px;background: #fafafa;color: #a5a5a5;text-align: center;vertical-align: middle;overflow: hidden;border-left: none !important;border-bottom: 1px solid #ededed;}
+.table_slider td, .table_slider th {border: 1px solid #EDEDED;}
+th, td {font-weight: normal;text-align: left;}
+.table_slider td {vertical-align: top;}
+.table_slider td {text-align: center;vertical-align: middle;border-bottom: 1px solid #EDEDED;height: 46px;}
+.text-center{text-align: center;}
+.red{color: red;}
+.blue{color: blue;}
+</style>
+<body>
+<div th:replace="common/top::top_bar"></div> 
+<a href="" th:href="@{/organization/index/}+${organization.organizationId}+'/'">组织详情</a>>
+<a href="" th:href="@{/activity/list/}+${organization.organizationId}+'/'">活动列表</a>>
+跨服要塞<br/>
+<input type="hidden" th:value="${organization.organizationId}" id="organizationId"/>
+	<table width="500" class="table_slider">
+        <tbody>
+        <tr>
+          <th width="120" scope="col">活动日期</th>
+          <th width="120" scope="col">成员名称</th>
+          <th width="80" scope="col">分数</th>
+          <th width="80" scope="col">考核得分</th>
+          <th width="120" scope="col">操作</th>
+        </tr>
+        <tr style="height:10px;"th:each="spanfort,spanfortStat : ${spanFortScoreList}">
+          <td>
+          	<p th:text="${#dates.format(activity.activityDate,'yyyy-MM-dd')}"></p>
+          </td>
+          <td>
+          	<p th:text="${spanfort.memberNick}"></p>
+          </td>
+		  <td><input type="text" style="width:25px;" th:value="${spanfort.score}" th:id="'score_'+${spanfort.joinId}"/></td>
+          <td th:text="${spanfort.score}" class="red" ></td>
+          <td>
+			<p><input type="button" value="保存" th:onclick="'save_spanfort('+${spanfort.joinId}+');'" /></p>
+		  </td>
+        </tr>   
+        </tbody>
+	</table>
+	
+</body> 
+<script type="text/javascript">
+var path=$("#path").val();
+function save_spanfort(joinId){
+	var score = $("#score_"+joinId).val(); 
+	var url = path+"/activity/updateSpanFortScore"
+	$.ajax({
+		url:url,
+		data:{joinId:joinId,score:score},
+		type:"post",
+		dataType:"text",
+		success:function(data){
+			if(data && data == 1){
+				alert("更新成功!");
+				window.location.reload();
+			}
+		},
+		error:function(){
+			alert("系统繁忙,修改失败,请稍后重试!");
+		}
+	});
+}
+$(function(){
+
+});
+</script>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+    <meta charset="UTF-8"/> 
+    <title th:text="${organization.organizationName}+'要塞分数'">欢迎</title> 
+    <script type="text/javascript" src="../../static/js/jquery-1.7.2.min.js" data-th-src="@{/js/jquery-1.7.2.min.js}"></script>
+    <script type="text/javascript" src="../../static/My97DatePicker/WdatePicker.js" data-th-src="@{/My97DatePicker/WdatePicker.js}"></script>
+</head> 
+<style>
+.table_slider {border: 1px #EDEDED solid;margin: 5px 0;}
+.table_slider {border-collapse: collapse;}
+.table_slider th {height: 35px;background: #fafafa;color: #a5a5a5;text-align: center;vertical-align: middle;overflow: hidden;border-left: none !important;border-bottom: 1px solid #ededed;}
+.table_slider td, .table_slider th {border: 1px solid #EDEDED;}
+th, td {font-weight: normal;text-align: left;}
+.table_slider td {vertical-align: top;}
+.table_slider td {text-align: center;vertical-align: middle;padding: 5px 0;border-bottom: 1px solid #EDEDED;height: 46px;}
+.select {height: 25px;border: 1px #ccc solid;color: #666;}
+.search a {width: 55px;height: 25px;background-position: -161px -137px;display: block;position: relative;left: 10px;top: 0px;}
+.search td {width: 55px;height: 25px;}
+.blackbox {position: fixed;top: 0;left: 0;z-index: 9999;width: 100%;height: 100%;background: url(../../../images/pf-bg.png) repeat;}
+.dialog {position: fixed;left: 140px;top: 2000px;background-color: #fff;border: 3px solid #e6e5e5;}
+.text-center{text-align: center;}
+.red{color: red;}
+</style>
+<body>
+<div th:replace="common/top::top_bar"></div> 
+<a href="" th:href="@{/organization/index/}+${organization.organizationId}+'/'">组织详情</a>>
+活动列表<br/>
+<input type="hidden" th:value="${organization.organizationId}" id="organizationId"/>
+<form id="search_record" th:action="@{/activity/list/}+${organization.organizationId}+'/'">	
+	<select name="activityType">
+	  	<option value="all" selected="selected">全部类型</option>
+	  	<option value="0">战力涨幅</option>
+	  	<option value="1">本服要塞</option>
+	  	<option value="2">跨服要塞</option>
+	  	<option value="3">天地战场</option>
+	  	<option value="4">本服争霸</option>
+	  	<option value="5">跨服争霸</option>
+	  	<option value="6">其他活动</option>
+	</select>
+	<select name="activityDate" >
+	   <option value="all" th:selected="${activityDate == 'all'}">所有日期</option>
+	   <option th:each="actDate,actDateStat : ${actDateList}" th:selected="${#dates.format(actDate.activityDate,'yyyy-MM-dd')} eq ${activityDate}" 
+	   	th:value="${actDate.activityDate}" th:text="${actDate.activityDate}">
+	   </option>
+	</select>
+	<input type="button" value="查询" onclick="search_record();" />
+</form>
+<input type="button" value="新增活动" id="to_add_activity" />
+	<table width="763" border="0" cellspacing="0" cellpadding="0" class="table_slider">
+        <tbody>
+        <tr>
+          <!-- (0升战,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6其他活动) -->
+          <th width="100" scope="col">活动类型</th>
+          <th width="120" scope="col">活动日期</th>
+          <th width="400" scope="col">活动名称</th>
+          <th width="100" scope="col">操作</th>
+        </tr>
+        <tr th:each="act,actStat : ${actList}">
+          <td  th:switch="${act.activityType}">
+          	<p th:case="0" >战力涨幅</p>
+          	<p th:case="1" >本服要塞</p>
+          	<p th:case="2" >跨服要塞</p>
+          	<p th:case="3" >天地战场</p>
+          	<p th:case="4" >本服争霸</p>
+          	<p th:case="5" >跨服争霸</p>
+          	<p th:case="6" >其他活动</p>
+          </td>
+          <td>
+          	<p th:text="${#dates.format(act.activityDate,'yyyy-MM-dd')}"></p>
+          </td>
+          <td>
+            <p th:text="${act.activityName}"></p>
+          </td>
+          <td>
+			<p><a href="javascript:void(0);" th:href="@{/activity/edit/}+${organization.organizationId}+'/'+${act.activityId}+'/'" class="c5">编辑</a></p>
+			
+		  </td>
+        </tr>   
+        </tbody>
+	</table>
+<div class="blackbox" id="blackbox" style="display:none;"></div>	
+<div id="add_activity" class="dialog" style="z-index: 10000;display: none;">
+<div class="bankd-body-left">
+<h2 class="text-center">新增组织活动</h2>
+	<form id="add_actForm" th:action="@{/activity/list/}+${organization.organizationId}+'/'">
+	<input type="hidden" th:value="${organization.organizationId}" name="organizationId"/>
+	<table cellspacing="0" cellpadding="0" class="table_slider">
+        <tr>
+          <td width="100">
+            <p>活动类型</p>
+          </td>
+           <td width="250">
+			<select name="activityType" >
+			   <option value="0" >战力涨幅</option>
+			   <option value="1" >本服要塞</option>
+			   <option value="2" >跨服要塞</option>
+			   <option value="3" >天地战场</option>
+			   <option value="4" >本服争霸</option>
+			   <option value="5" >跨服争霸</option>
+			   <option value="6" >其他活动</option>
+			</select>
+          </td>
+        </tr>   
+        <tr>
+          <td><p>活动时间</p></td>
+          <td>
+          <p><input name="activityDate" style="width:100px;" onfocus="WdatePicker()" readonly="true" type="text" value="" /></p>
+          <p class="red" id="date_msg" ></p>
+          </td>
+        </tr> 
+        <tr>
+          <td><p>活动名称</p></td>
+          <td colspan="2">
+          <p><input name="activityName" style="width:100px;" type="text" value="" /></p>
+          <p class="red" id="name_msg" ></p>
+          </td>
+        </tr>
+        <tr>
+          <td><p>及格分数</p></td>
+          <td colspan="2">
+          <p><input name="examine" style="width:100px;" type="text" value="" /></p>
+          <p class="red" id="examine_msg" ></p>
+          </td>
+        </tr>  
+        <tr>
+          <td><p>操作</p></td>
+          <td><p><input type="button" value="保存" id="add_act_click" /></p></td>
+        </tr> 
+	</table>
+	</form>
+</div>
+</div>
+</body> 
+<script type="text/javascript">
+var path=$("#path").val();
+function search_record(){
+	var search = $("#search_record");
+	search.submit();
+}
+$(function(){
+	$("#blackbox").click(function(){
+		$("#add_activity").hide();
+		$("#blackbox").hide();
+	});
+
+	$("#to_add_activity").click(function(){
+	    var tops=($(window).height()-$("#add_activity").height())/2,
+		lefts=($(window).width()-$("#add_activity").width())/2-10;
+		$("#add_activity").css({"top":tops,"left": lefts});
+		$("#add_activity").show();
+		$("#blackbox").show();
+	});
+	$("#add_act_click").click(function(){
+		var $form = $("#add_actForm");
+		var act_data = $form.serializeArray();
+		var activityDate = $('input[name="activityDate"]').val();
+		if(activityDate == ""){
+			$("#date_msg").html("活动时间不能为空!");
+			return;
+		}else{
+			$("#date_msg").html("");
+		}
+		var activityName = $('input[name="activityName"]').val();
+		if(activityName == ""){
+			$("#name_msg").html("活动时间不能为空!");
+			return;
+		}else{
+			$("#name_msg").html("");
+		}
+		
+		var examine = $('input[name="examine"]').val();
+		if(examine == ""){
+			$("#examine_msg").html("及格分数不能为空");
+			return;
+		}else{
+			$("#examine_msg").html("");
+		}		
+		
+		var url = path+"/activity/addActivity"
+		$.ajax({
+			url:url,
+			data:act_data,
+			type:"post",
+			dataType:"text",
+			success:function(data){
+				if(data && data == 1){
+					alert("保存成功!");
+					window.location.reload();
+				}else{
+					alert("保存失败!");
+				}
+			},
+			error:function(){
+				alert("系统繁忙,修改失败,请稍后重试!");
+			}
+	});
+	});
+});
+</script>
+</html>

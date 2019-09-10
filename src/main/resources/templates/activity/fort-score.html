@@ -1,0 +1,131 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+    <meta charset="UTF-8"/> 
+    <title th:text="${organization.organizationName}+'本服要塞'">欢迎</title> 
+    <script type="text/javascript" src="../../static/js/jquery-1.7.2.min.js" data-th-src="@{/js/jquery-1.7.2.min.js}"></script>
+    <script type="text/javascript" src="../../static/My97DatePicker/WdatePicker.js" data-th-src="@{/My97DatePicker/WdatePicker.js}"></script>
+</head> 
+<style>
+.table_slider {border: 1px #EDEDED solid;margin: 5px 0;}
+.table_slider {border-collapse: collapse;}
+.table_slider th {height: 35px;background: #fafafa;color: #a5a5a5;text-align: center;vertical-align: middle;overflow: hidden;border-left: none !important;border-bottom: 1px solid #ededed;}
+.table_slider td, .table_slider th {border: 1px solid #EDEDED;}
+th, td {font-weight: normal;text-align: left;}
+.table_slider td {vertical-align: top;}
+.table_slider td {text-align: center;vertical-align: middle;border-bottom: 1px solid #EDEDED;height: 46px;}
+.text-center{text-align: center;}
+.red{color: red;}
+.blue{color: blue;}
+</style>
+<body>
+<div th:replace="common/top::top_bar"></div> 
+<a href="" th:href="@{/organization/index/}+${organization.organizationId}+'/'">组织详情</a>>
+<a href="" th:href="@{/activity/list/}+${organization.organizationId}+'/'">活动列表</a>>
+本服要塞<br/>
+<input type="hidden" th:value="${organization.organizationId}" id="organizationId"/>
+	<table width="1200" border="0" cellspacing="0" cellpadding="0" class="table_slider">
+        <tbody>
+        <tr>
+          <th width="300" scope="col">活动日期</th>
+          <th width="300" scope="col">成员名称</th>
+          <th width="80" scope="col">火</th>
+          <th width="80" scope="col">风</th>
+          <th width="80" scope="col">雷</th>
+          <th width="80" scope="col">土</th>
+          <th width="80" scope="col">水</th>
+          <th width="80" scope="col">铁</th>
+          <th width="80" scope="col">田</th>
+          <th width="80" scope="col">汤</th>
+          <th width="80" scope="col">涡</th>
+          <th width="80" scope="col">霜</th>
+          <th width="80" scope="col">云</th>
+          <th width="80" scope="col">鸟</th>
+          <th width="80" scope="col">泷</th>
+          <th width="80" scope="col">川</th>
+          <th width="80" scope="col">海</th>
+          <th width="80" scope="col">雨</th>
+          <th width="80" scope="col">草</th>
+          <th width="80" scope="col">熊</th> 
+          <th width="160" scope="col">考核得分</th>         
+          <th width="200" scope="col">操作</th>
+        </tr>
+        <tr th:each="fort,fortStat : ${fortScoreList}">
+          <td>
+          	<p th:text="${#dates.format(fort.activityDate,'yyyy-MM-dd')}"></p>
+          </td>
+          <td>
+          	<p th:text="${fort.memberNick}"></p>
+          </td>
+          <td><input type="text" style="width:25px;" th:value="${fort.huo}" th:id="'huo_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.feng}" th:id="'feng_'+${fort.joinId}"/></td>          
+          <td><input type="text" style="width:25px;" th:value="${fort.lei}" th:id="'lei_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.tu}" th:id="'tu_'+${fort.joinId}"/></td>
+          <td><input type="text" style="width:25px;" th:value="${fort.shui}" th:id="'shui_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.tie}" th:id="'tie_'+${fort.joinId}"/></td>          
+          <td><input type="text" style="width:25px;" th:value="${fort.tian}" th:id="'tian_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.tang}" th:id="'tang_'+${fort.joinId}"/></td>
+          <td><input type="text" style="width:25px;" th:value="${fort.wo}" th:id="'wo_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.shuang}" th:id="'shuang_'+${fort.joinId}"/></td>          
+          <td><input type="text" style="width:25px;" th:value="${fort.yun}" th:id="'yun_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.niao}" th:id="'niao_'+${fort.joinId}"/></td>
+          <td><input type="text" style="width:25px;" th:value="${fort.longg}" th:id="'longg_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.chuan}" th:id="'chuan_'+${fort.joinId}"/></td>          
+          <td><input type="text" style="width:25px;" th:value="${fort.hai}" th:id="'hai_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.yu}" th:id="'yu_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.cao}" th:id="'cao_'+${fort.joinId}"/></td>
+		  <td><input type="text" style="width:25px;" th:value="${fort.xiong}" th:id="'xiong_'+${fort.joinId}"/></td>
+		  <td><p th:text="${fort.score}" th:class="${fort.score >= activity.examine?'blue':'red'}"></p></td>
+          <td>
+          <!-- fort.joinId -->
+			<p><input type="button" value="保存" th:onclick="'save_fort('+${fort.joinId}+');'" /></p>
+		  </td>
+        </tr>   
+        </tbody>
+	</table>
+	
+</body> 
+<script type="text/javascript">
+var path=$("#path").val();
+function save_fort(joinId){
+	var huo = $("#huo_"+joinId).val();
+	var feng = $("#feng_"+joinId).val();
+	var lei = $("#lei_"+joinId).val();
+	var tu = $("#tu_"+joinId).val();
+	var shui = $("#shui_"+joinId).val();
+	var tie = $("#tie_"+joinId).val();
+	var tian = $("#tian_"+joinId).val();
+	var tang = $("#tang_"+joinId).val();
+	var wo = $("#wo_"+joinId).val();
+	var shuang = $("#shuang_"+joinId).val();
+	var yun = $("#yun_"+joinId).val();
+	var niao = $("#niao_"+joinId).val();
+	var longg = $("#longg_"+joinId).val();
+	var chuan = $("#chuan_"+joinId).val();
+	var hai = $("#hai_"+joinId).val();
+	var yu = $("#yu_"+joinId).val();
+	var cao = $("#cao_"+joinId).val();
+	var xiong = $("#xiong_"+joinId).val();
+	var url = path+"/activity/updateFortScore"
+	$.ajax({
+		url:url,
+		data:{joinId:joinId,huo:huo,feng:feng,lei:lei,tu:tu,shui:shui,tie:tie,tian:tian,tang:tang,wo:wo,shuang:shuang,yun:yun,
+		niao:niao,longg:longg,chuan:chuan,hai:hai,yu:yu,cao:cao,xiong:xiong},
+		type:"post",
+		dataType:"text",
+		success:function(data){
+			if(data && data == 1){
+				alert("更新成功!");
+				window.location.reload();
+			}
+		},
+		error:function(){
+			alert("系统繁忙,修改失败,请稍后重试!");
+		}
+	});
+}
+$(function(){
+
+});
+</script>
+</html>

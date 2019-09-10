@@ -1,0 +1,37 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+    <meta charset="UTF-8"/> 
+    <title th:text="${organization.organizationName}+'成员列表'">欢迎</title> 
+</head> 
+<style>
+.member-table th{border:1px solid #FF0033;text-align:center;padding-top:8px;padding-bottom:8px;}
+.member-table td{border:1px solid #ededed;text-align:center;padding-top:8px;padding-bottom:8px;}
+</style>
+<body>
+<div th:replace="common/top::top_bar"></div>
+<a href="" th:href="@{/organization/index/}+${organization.organizationId}+'/'">组织详情</a>>
+人员管理
+<table class="member-table">
+	<tr>
+		<th width="80">成员昵称</th>
+		<th width="80">成员职位</th>
+		<th width="80">成员类型</th>
+		<th width="80">成员状态</th>
+		<th width="200">加入时间</th>
+		<th width="150">操作</th>
+	</tr>
+	<tr data-th-each="member,memberStat : ${memberList}">
+		<td th:text="${member.memberNick}">--</td>
+		<td th:text="${member.memberJob}">--</td>
+		<td th:text="${member.memberType}==0?'离开':'存在'">--</td>
+		<td th:text="${member.memberStatus}==0?'学员':'成员'">--</td>
+		<td th:text="${#dates.format(member.memberDate,'yyyy-MM-dd')}">--</td>
+		<td>
+			<a th:href="@{/member/fight/}+${member.memberId}+'/'" href="javascript:void(0);">战力统计</a>
+			<a th:href="@{/member/update/}+${member.memberId}+'/'" href="javascript:void(0);">修改</a>
+		</td>
+	</tr>
+</table>
+</body> 
+</html>

@@ -1,0 +1,97 @@
+package cn.com.service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import cn.com.model.Activity;
+import cn.com.model.MemberFight;
+
+public interface ActivityService{
+	
+	/**
+	 * 通过组织ID获取组织活动类型
+	 * Param organizationId	组织ID
+	 * @return List<Map<String,Object>> 组织活动类型
+	 */
+	List<Map<String,Object>> getActTypeByOrganizationId(int organizationId);
+	/**
+	 * 通过组织ID获取组织活动日期
+	 * Param organizationId	组织ID
+	 * @return List<Map<String,Object>> 组织活动日期
+	 */
+	List<Map<String,Object>> getActDateByOrganizationId(int organizationId);
+	/**
+	 * 通过组织ID获取组织活动详情
+	 * Param organizationId	组织ID
+	 * @return List<Activity> 组织活动详情
+	 */
+	List<Activity> getActByOrganizationId(int organizationId,String activityType,String activityDate);
+	/**
+	 * 新增活动记录
+	 * Map<String, Object> params 活动信息
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int saveActivity(Activity activity);
+	/**
+	 * 通过活动ID获取本服要塞数据
+	 * Param activityId	活动ID
+	 * @return List<Map<String,Object>> 本服要塞数据
+	 */
+	List<Map<String,Object>> getFortsByActivityId(int activityId);
+	/**
+	 * 通过活动ID获取活动详情
+	 * Param activityId	活动ID
+	 * @return Activity 活动详情
+	 */
+	Activity getActivityById(int activityId);
+	/**
+	 * 更新本服要塞活动记录
+	 * Map<String, Object> params 活动信息
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int updateFortScore(Map<String, Object> params);
+	/**
+	 * 新增本服要塞活动记录
+	 * Param int activityId 活动ID,int memberId	成员ID
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int saveActFortScore(int activityId,int memberId);
+	/**
+	 * 新增跨服要塞活动记录
+	 * Param int activityId 活动ID,int memberId	成员ID
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int saveActSpanFortScore(int activityId,int memberId);
+	/**
+	 * 通过活动ID获取跨服要塞数据
+	 * Param activityId	活动ID
+	 * @return List<Map<String,Object>> 跨服要塞数据
+	 */
+	List<Map<String,Object>> getSpanFortsByActivityId(int activityId);
+	
+	/**
+	 * 更新跨服要塞活动记录
+	 * Map<String, Object> params 活动信息
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int updateSpanFortScore(Map<String, Object> params);	
+	/**
+	 * 通过活动ID获取战力增长数据
+	 * Param activityId	活动ID
+	 * @return List<Map<String,Object>> 战力增长数据
+	 */
+	List<Map<String,Object>> getFightByActivityId(int activityId);
+	/**
+	 * 通过日期差值获取战力增长数据
+	 * Param memberId	成员ID endDate 上次的截止日期
+	 * @return MemberFight 战力增长数据
+	 */
+	MemberFight getMemberFightBy7Day(int memberId,Date endDate);
+	/**
+	 * 新增战力涨幅活动记录
+	 * Param int activityId 活动ID,int memberId	成员ID
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int saveFightScore(int activityId, int memberId,Date beginDate,Date endDate,Double memberBeginFight);
+}

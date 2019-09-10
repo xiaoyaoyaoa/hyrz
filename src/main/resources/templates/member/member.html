@@ -1,0 +1,112 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+    <meta charset="UTF-8"/> 
+    <title th:text="'编辑成员-'+${member.memberNick}"></title> 
+    <script type="text/javascript" src="../../static/js/jquery-1.7.2.min.js" data-th-src="@{/js/jquery-1.7.2.min.js}"></script>
+</head> 
+<style>
+.member-table th{border:1px solid #FF0033;}
+</style>
+<body>
+<div th:replace="common/top::top_bar"></div>
+<a href="" th:href="@{/organization/index/}+${member.organizationId}+'/'">组织详情</a>>
+<a href="" th:href="@{/member/list/}+${member.organizationId}+'/'">人员管理</a>>
+成员信息管理
+<input type="hidden" id="organizationId" th:value="${member.organizationId}"/>
+<form id="memberForm" >
+	<input type="hidden" name="memberId" th:value="${member.memberId}"/>
+	<table border="0" cellspacing="0" cellpadding="0" class="member-table"><tbody>
+        <tr>
+          <th scope="row">成员姓名：</th>
+          <td colspan="4"><input type="text" name="memberName"  th:value="${member.memberName}" disabled="disabled" style="width:106px;padding-left:4px;"></td>
+        </tr>
+        <tr>
+          <th width="128" scope="row">游戏昵称：</th>
+          <td colspan="4"><input type="text" name="memberNick"  th:value="${member.memberNick}" style="width:106px;padding-left:4px;" value="风雨无阻"></td>
+        </tr>
+        <tr>
+          <th width="128" scope="row">成员职位：</th>
+          <td colspan="4"><input type="text" name="memberJob" th:value="${member.memberJob}" style="width:106px;padding-left:4px;" value="风雨无阻"></td>
+        </tr>
+        <tr th:if="${member.memberType == 0}">
+          <th scope="row">成员类型：</th>
+          <td width="76">
+            <label><input type="radio" name="memberType" value="0" checked="checked">离开 </label>
+          </td>
+          <td width="132">
+            <label><input type="radio" name="memberType" value="1">存在</label>
+          </td>
+          <td width="336">&nbsp;</td>
+        </tr>
+        <tr th:if="${member.memberType == 1}">
+          <th scope="row">成员类型：</th>
+          <td width="76">
+            <label><input type="radio" name="memberType" value="0">离开 </label>
+          </td>
+          <td width="132">
+            <label><input type="radio" name="memberType" value="1" checked="checked">存在</label>
+          </td>
+          <td width="336">&nbsp;</td>
+        </tr>
+        <tr th:if="${member.memberStatus == 0}">
+          <th scope="row">成员状态：</th>
+          <td width="76">
+            <label><input type="radio" name="memberStatus" value="0"  checked="checked">学员 </label>
+          </td>
+          <td width="132">
+            <label><input type="radio" name="memberStatus" value="1">成员</label>
+          </td>
+          <td width="336">&nbsp;</td>
+        </tr>
+        <tr th:if="${member.memberStatus == 1}">
+          <th scope="row">成员状态：</th>
+          <td width="76">
+            <label><input type="radio" name="memberStatus" value="0">学员 </label>
+          </td>
+          <td width="132">
+            <label><input type="radio" name="memberStatus" value="1"  checked="checked">成员</label>
+          </td>
+          <td width="336">&nbsp;</td>
+        </tr>        
+        <tr>
+			<th scope="row">加入日期：</th>
+			<td colspan="4">
+				<input name="memberDate" type="text" style="width:110px;" th:value="${#dates.format(member.memberDate,'yyyy-MM-dd')}" disabled="disabled" >
+			</td>
+		</tr>
+        <tr>
+          <th scope="row"></th>
+          <td colspan="4" valign="top"><input type="button" id="update_member" value="保存"></td>
+        </tr>
+	</tbody></table>
+</form> 	
+</body> 
+<script type="text/javascript">
+var path=$("#path").val();
+$(function(){
+	var organizationId = $("#organizationId").val();
+	$("#update_member").click(function(){
+		var $form = $("#memberForm");
+		var member_data = $form.serializeArray();
+		var url = path+"/member/doUpdate"
+		$.ajax({
+			url:url,
+			data:member_data,
+			type:"post",
+			dataType:"text",
+			success:function(data){
+				if(data && data == 1){
+					alert("保存成功!");
+					location.href=path+"member/list/"+organizationId+"/";
+				}
+			},
+			error:function(){
+				alert("系统繁忙,修改失败,请稍后重试!");
+			}
+	});
+	});
+});
+
+</script>
+</html>
