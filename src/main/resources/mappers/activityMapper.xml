@@ -114,4 +114,53 @@
 	#{activityId}
 	);
 </insert>
+
+<!-- 新增争霸活动记录 -->
+<insert id="saveConquest"  parameterType="java.util.HashMap">
+	INSERT INTO t_conquest(activityId,memberId,conType,conSession,isJoin,isFight)
+	VALUES
+	(
+		#{activityId},
+		#{memberId},
+		#{conType},
+		#{conSession},
+		0,
+		0
+	);
+</insert>
+
+<!-- 通过活动ID获取组织争霸详细数据 -->
+<select id="getConquestByActivityId"  resultType="java.util.HashMap">
+	SELECT tm.memberNick,tc.* FROM t_conquest tc,t_member tm WHERE  tc.memberId = tm.memberId
+   		AND tc.activityId = #{activityId}
+	ORDER BY tc.conSession ASC
+</select>
+
+<!-- 更新争霸活动记录 -->
+<update id="updateConquest" parameterType="java.util.Map">
+	update t_conquest set isJoin=#{isJoin},isFight=#{isFight},winCount=#{winCount}
+	where joinId = #{joinId}
+</update>
+<!-- 新增争霸活动记录 -->
+<insert id="saveMainConquest"  parameterType="java.util.HashMap">
+	INSERT INTO t_main_conquest(activityId,memberId,conType)
+	VALUES
+	(
+		#{activityId},
+		#{memberId},
+		#{conType}
+	);
+</insert>
+
+<!-- 通过活动ID获取组织争霸数据 -->
+<select id="getMainConquestByActivityId"  resultType="java.util.HashMap">
+	SELECT tm.memberNick,tmc.* FROM t_main_conquest tmc,t_member tm WHERE  tmc.memberId = tm.memberId
+		AND tmc.activityId = #{activityId}
+	ORDER BY tm.memberId ASC
+</select>
+<!-- 更新争霸主活动记录 -->
+<update id="updateMainConquest" parameterType="java.util.Map">
+	update t_main_conquest set score=#{score}
+	where joinId = #{joinId}
+</update>
 </mapper>

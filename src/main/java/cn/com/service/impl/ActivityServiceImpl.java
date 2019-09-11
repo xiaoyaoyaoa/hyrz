@@ -20,7 +20,7 @@ import cn.com.util.StringUtil;
 @Service
 public class ActivityServiceImpl implements ActivityService{
 
-	@Autowired 
+	@Autowired
 	private ActivityMapper activityMapper;
 
 	@Autowired MemberService memberService;
@@ -53,7 +53,7 @@ public class ActivityServiceImpl implements ActivityService{
 			//查询组织有效成员列表
 			List<Member> memberList = memberService.getMemberList(organizationId,1,1);
 			//活动类型(0战力涨幅,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6其他活动)
-			if(activityType == 0){
+			if(activityType == 0){//0战力涨幅
 				//战力涨幅比较特殊,活动时间为范围,以7天为例
 				for(Member member: memberList){
 					//先查询上次统计的记录用于回填上次战力数据
@@ -70,7 +70,7 @@ public class ActivityServiceImpl implements ActivityService{
 					}
 				};
 				
-			}else if(activityType == 1){
+			}else if(activityType == 1){//1本服要塞
 				//要塞表中每人插入一条基础数据
 				for(Member member: memberList){
 					if (activityService.saveActFortScore(activityId, member.getMemberId()) <=0 ) {
@@ -78,13 +78,51 @@ public class ActivityServiceImpl implements ActivityService{
 						return add_flag;
 					}
 				};
-			}else if(activityType == 2){
+			}else if(activityType == 2){//2跨服要塞
 				//跨服要塞表中每人插入一条基础数据
 				for(Member member: memberList){
 					if (activityService.saveActSpanFortScore(activityId, member.getMemberId()) <=0 ) {
 						add_flag = -1;
 						return add_flag;
 					}
+				};
+			}else if(activityType == 3){//3天地战场
+				//跨服要塞表中每人插入一条基础数据
+				for(Member member: memberList){
+					if (activityService.saveActSpanFortScore(activityId, member.getMemberId()) <=0 ) {
+						add_flag = -1;
+						return add_flag;
+					}
+				};
+			}else if(activityType == 4){//4本服争霸
+				//本服组织争霸表中每人插入一条基础数据(包含本周四场的记录)
+				for(Member member: memberList){
+					if (activityService.saveMainConquest(activityId, member.getMemberId(),0) <=0 ) {
+						add_flag = -1;
+						return add_flag;
+					}
+					for (int i = 1; i <= 4 ; i++) {
+						if (activityService.saveConquest(activityId, member.getMemberId(),0,i) <=0 ) {
+							add_flag = -1;
+							return add_flag;
+						}
+					}
+
+				};
+			}else if(activityType == 5){//5跨服争霸
+				//跨服组织争霸表中每人插入一条基础数据(包含本周四场的记录)
+				for(Member member: memberList){
+					if (activityService.saveMainConquest(activityId, member.getMemberId(),1) <=0 ) {
+						add_flag = -1;
+						return add_flag;
+					}
+					for (int i = 1; i <= 4 ; i++) {
+						if (activityService.saveConquest(activityId, member.getMemberId(),1,i) <=0 ) {
+							add_flag = -1;
+							return add_flag;
+						}
+					}
+
 				};
 			}
 		}
@@ -131,5 +169,29 @@ public class ActivityServiceImpl implements ActivityService{
 	public int saveFightScore(int activityId, int memberId,Date beginDate,Date endDate,Double memberBeginFight) {
 		return activityMapper.saveFightScore(activityId, memberId, beginDate,endDate,memberBeginFight);
 	}
+	@Override
+	public int saveConquest(int activityId,int memberId,int conType,int conSession) {
+		return activityMapper.saveConquest(activityId,memberId,conType,conSession);
+	}
+	@Override
+	public List<Map<String, Object>>  getConquestByActivityId(int activityId) {
+		return activityMapper.getConquestByActivityId(activityId);
+	}
+	@Override
+	public int updateConquest(Map<String, Object> params) {
+		return activityMapper.updateConquest(params);
+	}
+	@Override
+	public int saveMainConquest(int activityId,int memberId,int conType) {
+		return activityMapper.saveMainConquest(activityId,memberId,conType);
+	}
 
+	@Override
+	public List<Map<String, Object>>  getMainConquestByActivityId(int activityId) {
+		return activityMapper.getMainConquestByActivityId(activityId);
+	}
+	@Override
+	public int updateMainConquest(Map<String, Object> params) {
+		return activityMapper.updateMainConquest(params);
+	}
 }

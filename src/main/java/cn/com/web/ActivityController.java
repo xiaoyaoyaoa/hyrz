@@ -104,22 +104,40 @@ public class ActivityController{
 		}
 		model.addAttribute("activity",activity);
 		//活动类型(0战力涨幅,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6其他活动)
-		if(activity.getActivityType() == 0){
+		if(activity.getActivityType() == 0){//战力涨幅
 			//根据活动日期查询战力详细数据
 			List<Map<String,Object>> figthList = activityService.getFightByActivityId(activityId);
 			model.addAttribute("figthList",figthList);
 			return "activity/activity-fight";
-		}else if(activity.getActivityType() == 1){
+		}else if(activity.getActivityType() == 1){//本服要塞
 			//查询本服要塞详细数据
 			List<Map<String,Object>> fortScoreList = activityService.getFortsByActivityId(activityId);
 			model.addAttribute("fortScoreList",fortScoreList);
 			return "activity/fort-score";
-		}else if(activity.getActivityType() == 2){
+		}else if(activity.getActivityType() == 2){//跨服要塞
 			//查询跨服要塞详细数据
 			List<Map<String,Object>> spanFortScoreList = activityService.getSpanFortsByActivityId(activityId);
 			model.addAttribute("spanFortScoreList",spanFortScoreList);
 			return "activity/span-fort-score";
 			
+		}else if(activity.getActivityType() == 3){//天地战场
+
+		}else if(activity.getActivityType() == 4){//本服争霸
+			//查询本服争霸详细数据
+			List<Map<String,Object>> conquesList = activityService.getConquestByActivityId(activityId);
+			model.addAttribute("conquesList",conquesList);
+
+			List<Map<String,Object>> mainConquesList = activityService.getMainConquestByActivityId(activityId);
+			model.addAttribute("mainConquesList",mainConquesList);
+			return "activity/span-conquest";
+
+		}else if(activity.getActivityType() == 5){//跨服争霸
+			List<Map<String,Object>> conquesList = activityService.getConquestByActivityId(activityId);
+			model.addAttribute("conquesList",conquesList);
+
+			List<Map<String,Object>> mainConquesList = activityService.getMainConquestByActivityId(activityId);
+			model.addAttribute("mainConquesList",mainConquesList);
+			return "activity/span-conquest";
 		}
 		model.addAttribute("errorMsg","活动类型无法识别");
 		return "error";
@@ -143,5 +161,23 @@ public class ActivityController{
 			update_flag = 1;
 		}
 		return update_flag;
-	}		
+	}
+	@ResponseBody
+	@RequestMapping("/updateConquest")
+	public int updateConquest(Model model, @RequestParam Map<String,Object> params){
+		int update_flag = 0;//是否修改成功 0修改失败 1修改成功
+		if (null != params && params.size()>0 && activityService.updateConquest(params)>0) {
+			update_flag = 1;
+		}
+		return update_flag;
+	}
+	@ResponseBody
+	@RequestMapping("/updateMainConquest")
+	public int updateMainConquest(Model model, @RequestParam Map<String,Object> params){
+		int update_flag = 0;//是否修改成功 0修改失败 1修改成功
+		if (null != params && params.size()>0 && activityService.updateMainConquest(params)>0) {
+			update_flag = 1;
+		}
+		return update_flag;
+	}
 }
