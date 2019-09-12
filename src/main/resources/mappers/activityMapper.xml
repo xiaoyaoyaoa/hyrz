@@ -136,7 +136,7 @@
 <!-- 更新争霸活动记录 -->
 <update id="updateConquest" parameterType="java.util.Map">
 	update t_conquest set firstSession=#{firstSession},firstNum=#{firstNum},secondSession=#{secondSession},secondNum=#{secondNum},
-	                      thirdSession=#{thirdSession},thirdNum=#{thirdNum},fourthSession=#{fourthSession},fourthNum=#{firstNum}
+	                      thirdSession=#{thirdSession},thirdNum=#{thirdNum},fourthSession=#{fourthSession},fourthNum=#{fourthNum},score=#{score}
 	where joinId = #{joinId}
 </update>
 </mapper>

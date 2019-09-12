@@ -24,20 +24,20 @@ th, td {font-weight: normal;text-align: left;}
 <a href="" th:href="@{/activity/list/}+${organization.organizationId}+'/'">活动列表</a>>
 组织争霸<br/>
 <input type="hidden" th:value="${organization.organizationId}" id="organizationId"/>
-	<table width="900" class="table_slider">
+	<table width="1000" class="table_slider">
         <tbody>
         <tr>
             <th width="120" scope="col">活动日期</th>
             <th width="120" scope="col">成员名称</th>
             <th width="80" scope="col">类型</th>
             <th width="80" scope="col">16进8</th>
-            <th width="80" scope="col">胜场</th>
+            <th width="50" scope="col">胜场</th>
             <th width="80" scope="col">8进4</th>
-            <th width="80" scope="col">胜场</th>
+            <th width="50" scope="col">胜场</th>
             <th width="80" scope="col">半决赛</th>
-            <th width="80" scope="col">胜场</th>
+            <th width="50" scope="col">胜场</th>
             <th width="80" scope="col">决赛</th>
-            <th width="80" scope="col">胜场</th>
+            <th width="50" scope="col">胜场</th>
             <th width="80" scope="col">打分</th>
             <th width="80" scope="col">操作</th>
         </tr>
@@ -52,28 +52,40 @@ th, td {font-weight: normal;text-align: left;}
                 <p th:text="${conques.conType==0?'本服':'跨服'}"></p>
             </td>
             <td >
-                <p th:text="${conques.firstSession}"></p>
+                <select name="firstSession" th:id="'firstSession_'+${conques.joinId}">
+                    <option th:selected="${conques.firstSession == 0}" value="0">未参加</option>
+                    <option th:selected="${conques.firstSession == 1}" value="1">已参加</option>
+                </select>
             </td>
             <td >
-                <p th:text="${conques.firstNum}"></p>
+                <input type="text" style="width:20px;" th:value="${conques.firstNum}" th:id="'firstNum_'+${conques.joinId}"/>
             </td>
             <td >
-                <p th:text="${conques.secondSession}"></p>
+                <select name="secondSession" th:id="'secondSession_'+${conques.joinId}">
+                    <option th:selected="${conques.secondSession == 0}" value="0">未参加</option>
+                    <option th:selected="${conques.secondSession == 1}" value="1">已参加</option>
+                </select>
             </td>
             <td >
-                <p th:text="${conques.secondNum}"></p>
+                <input type="text" style="width:20px;" th:value="${conques.secondNum}" th:id="'secondNum_'+${conques.joinId}"/>
             </td>
             <td >
-                <p th:text="${conques.thirdSession}"></p>
+                <select name="thirdSession" th:id="'thirdSession_'+${conques.joinId}">
+                    <option th:selected="${conques.thirdSession == 0}" value="0">未参加</option>
+                    <option th:selected="${conques.thirdSession == 1}" value="1">已参加</option>
+                </select>
             </td>
             <td >
-                <p th:text="${conques.thirdNum}"></p>
+                <input type="text" style="width:20px;" th:value="${conques.thirdNum}" th:id="'thirdNum_'+${conques.joinId}"/>
             </td>
             <td >
-                <p th:text="${conques.fourthSession}"></p>
+                <select name="fourthSession" th:id="'fourthSession_'+${conques.joinId}">
+                    <option th:selected="${conques.fourthSession == 0}" value="0">未参加</option>
+                    <option th:selected="${conques.fourthSession == 1}" value="1">已参加</option>
+                </select>
             </td>
             <td >
-                <p th:text="${conques.fourthNum}"></p>
+                <input type="text" style="width:20px;" th:value="${conques.fourthNum}" th:id="'fourthNum_'+${conques.joinId}"/>
             </td>
             <td>
                 <input type="text" style="width:20px;" th:value="${conques.score}" th:id="'score_'+${conques.joinId}"/>
@@ -89,11 +101,20 @@ th, td {font-weight: normal;text-align: left;}
 <script type="text/javascript">
 var path=$("#path").val();
 function save_conques(joinId){
+    var firstSession = $("#firstSession_"+joinId).val();
+    var firstNum = $("#firstNum_"+joinId).val();
+    var secondSession = $("#secondSession_"+joinId).val();
+    var secondNum = $("#secondNum_"+joinId).val();
+    var thirdSession = $("#thirdSession_"+joinId).val();
+    var thirdNum = $("#thirdNum_"+joinId).val();
+    var fourthSession = $("#fourthSession_"+joinId).val();
+    var fourthNum = $("#fourthNum_"+joinId).val();
     var score = $("#score_"+joinId).val();
     var url = path+"activity/updateConquest"
 	$.ajax({
 		url:url,
-		data:{joinId:joinId,isJoin:isJoin,isFight:isFight,winCount:winCount},
+		data:{joinId:joinId,firstSession:firstSession,firstNum:firstNum,secondSession:secondSession,secondNum:secondNum,thirdSession:thirdSession,
+            thirdNum:thirdNum,fourthSession:fourthSession,fourthNum:fourthNum,score:score},
 		type:"post",
 		dataType:"text",
 		success:function(data){
