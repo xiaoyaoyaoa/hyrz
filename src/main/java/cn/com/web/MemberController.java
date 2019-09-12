@@ -74,4 +74,22 @@ public class MemberController{
 		}
 		return update_flag;
 	}
+	@ResponseBody
+	@RequestMapping("/saveMember")
+	public int saveMember(Model model, @RequestParam Map<String,Object> params){
+		int add_flag = 0;//是否修改成功 0修改失败 1修改成功
+		if (null != params && params.size()>0 && memberService.saveMember(params)>0) {
+			add_flag = 1;
+		}
+		return add_flag;
+	}
+	@ResponseBody
+	@RequestMapping("/deleteMember")
+	public int deleteMember(Model model, @RequestParam Map<String,Object> params){
+		int add_flag = 0;//是否修改成功 0修改失败 1修改成功
+		if (null != params && params.size()>0 && memberService.deleteMember(params)>0) {
+			add_flag = 1;
+		}
+		return add_flag;
+	}
 }

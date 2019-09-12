@@ -70,5 +70,18 @@ public interface MemberMapper {
 	 * Param fightId	战力流水ID	memberNowFight	当前战力
 	 * @return int 操作标示 0失败其余成功
 	 */	
-	int updateMemberFightNew(@Param("fightId")int fightId,@Param("memberNowFight") double memberNowFight);
+	int updateMemberFightNew(@Param("fightId") int fightId,@Param("memberNowFight") double memberNowFight);
+
+	/**
+	 * 新增成员信息
+	 * Param Map<String, Object> params	成员信息
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int saveMember(Map<String, Object> params);
+	/**
+	 * 删除成员信息
+	 * Param Map<String, Object> params	成员信息
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int deleteMember(Map<String,Object> params);
 }

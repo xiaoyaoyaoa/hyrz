@@ -55,4 +55,17 @@ public interface MemberService{
 	 * @return MemberFight 成员战力信息
 	 */	
 	MemberFight getMemberFightNowById(int memberId);
+
+	/**
+	 * 新增成员信息
+	 * Param Map<String, Object> params	成员信息
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int saveMember(Map<String, Object> params);
+	/**
+	 * 删除成员信息
+	 * Param Map<String, Object> params	成员信息
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int deleteMember(Map<String,Object> params);
 }

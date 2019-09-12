@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/> 
     <title th:text="'编辑成员-'+${member.memberNick}"></title> 
     <script type="text/javascript" src="../../static/js/jquery-1.7.2.min.js" data-th-src="@{/js/jquery-1.7.2.min.js}"></script>
+    <script type="text/javascript" src="../../static/My97DatePicker/WdatePicker.js" data-th-src="@{/My97DatePicker/WdatePicker.js}"></script>
 </head> 
 <style>
 .member-table th{border:1px solid #FF0033;}
@@ -19,7 +20,7 @@
 	<table border="0" cellspacing="0" cellpadding="0" class="member-table"><tbody>
         <tr>
           <th scope="row">成员姓名：</th>
-          <td colspan="4"><input type="text" name="memberName"  th:value="${member.memberName}" disabled="disabled" style="width:106px;padding-left:4px;"></td>
+          <td colspan="4"><input type="text" name="memberName"  th:value="${member.memberName}" style="width:106px;padding-left:4px;"></td>
         </tr>
         <tr>
           <th width="128" scope="row">游戏昵称：</th>
@@ -72,9 +73,15 @@
         <tr>
 			<th scope="row">加入日期：</th>
 			<td colspan="4">
-				<input name="memberDate" type="text" style="width:110px;" th:value="${#dates.format(member.memberDate,'yyyy-MM-dd')}" disabled="disabled" >
+				<input name="memberDate" type="text" style="width:110px;" th:value="${#dates.format(member.memberDate,'yyyy-MM-dd')}"  onfocus="WdatePicker()" readonly="true" >
 			</td>
 		</tr>
+        <tr>
+            <th scope="row">忠诚度</th>
+            <td colspan="4">
+                <input name="loyalty" type="text" style="width:110px;"  th:value="${member.loyalty}">
+            </td>
+        </tr>
         <tr>
           <th scope="row"></th>
           <td colspan="4" valign="top"><input type="button" id="update_member" value="保存"></td>

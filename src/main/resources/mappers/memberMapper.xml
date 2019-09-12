@@ -23,15 +23,18 @@
     <if test="memberStatus != -1">
     and memberStatus = #{memberStatus}
     </if>
+	order by t.memberType desc,t.memberId asc
 </select>
 <!-- 修改成员信息 -->
 <update id="updateMember" parameterType="java.util.Map">
 	update T_MEMBER set
-		memberNick=#{memberNick}
+	    memberName=#{memberName}
+		,memberNick=#{memberNick}
 		,memberJob=#{memberJob}
 		,memberType=#{memberType}
-		,memberFight=#{memberFight}
 		,memberStatus=#{memberStatus}
+		,memberDate=#{memberDate}
+		,loyalty=#{loyalty}
 	where memberId = #{memberId}
 </update>
 <!-- 通过成员ID获取成员战力列表 -->
@@ -60,5 +63,28 @@
 	update t_member_fight set
 		memberNowFight=#{memberNowFight}
 	where fightId = #{fightId}
+</update>
+
+
+<!-- 新增成员 -->
+<insert id="saveMember"  parameterType="java.util.HashMap">
+	INSERT INTO t_member(organizationId,memberName,memberNick,memberJob,memberType,memberStatus,memberDate,loyalty)
+	VALUES
+	(
+		#{organizationId},
+		#{memberName},
+		#{memberNick},
+		#{memberJob},
+		#{memberType},
+		#{memberStatus},
+		#{memberDate},
+		#{loyalty}
+	);
+</insert>
+
+<!-- 删除成员 -->
+<update id="deleteMember"  parameterType="java.util.HashMap">
+	update T_MEMBER set memberType=0
+	where memberId = #{memberId}
 </update>
 </mapper>
