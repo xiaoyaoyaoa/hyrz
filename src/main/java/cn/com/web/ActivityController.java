@@ -121,7 +121,10 @@ public class ActivityController{
 			return "activity/span-fort-score";
 			
 		}else if(activity.getActivityType() == 3){//天地战场
-
+			//查询天地战场详细数据
+			List<Map<String,Object>> skyLandList = activityService.getSkyLandByActivityId(activityId);
+			model.addAttribute("skyLandList",skyLandList);
+			return "activity/sky-land";
 		}else if(activity.getActivityType() == 4){//本服争霸
 			//查询本服争霸详细数据
 			List<Map<String,Object>> conquesList = activityService.getConquestByActivityId(activityId);
@@ -165,4 +168,14 @@ public class ActivityController{
 		}
 		return update_flag;
 	}
+	@ResponseBody
+	@RequestMapping("/updateSkyLand")
+	public int updateSkyLand(Model model, @RequestParam Map<String,Object> params){
+		int update_flag = 0;//是否修改成功 0修改失败 1修改成功
+		if (null != params && params.size()>0 && activityService.updateSkyLand(params)>0) {
+			update_flag = 1;
+		}
+		return update_flag;
+	}
+
 }

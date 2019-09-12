@@ -89,7 +89,7 @@ public class ActivityServiceImpl implements ActivityService{
 			}else if(activityType == 3){//3天地战场
 				//跨服要塞表中每人插入一条基础数据
 				for(Member member: memberList){
-					if (activityService.saveActSpanFortScore(activityId, member.getMemberId()) <=0 ) {
+					if (activityService.saveSkyLand(activityId, member.getMemberId()) <=0 ) {
 						add_flag = -1;
 						return add_flag;
 					}
@@ -168,5 +168,17 @@ public class ActivityServiceImpl implements ActivityService{
 	@Override
 	public int updateConquest(Map<String, Object> params) {
 		return activityMapper.updateConquest(params);
+	}
+	@Override
+	public List<Map<String, Object>>  getSkyLandByActivityId(int activityId) {
+		return activityMapper.getSkyLandByActivityId(activityId);
+	}
+	@Override
+	public int saveSkyLand(int activityId,int memberId) {
+		return activityMapper.saveSkyLand(activityId,memberId);
+	}
+	@Override
+	public int updateSkyLand(Map<String, Object> params) {
+		return activityMapper.updateSkyLand(params);
 	}
 }

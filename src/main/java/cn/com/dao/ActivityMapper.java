@@ -127,5 +127,22 @@ public interface ActivityMapper {
 	 */
 	int updateConquest(Map<String, Object> params);
 
-
+	/**
+	 * 通过活动ID获取天地战场数据
+	 * Param activityId	活动ID
+	 * @return List<Map<String,Object>> 天地战场数据
+	 */
+	List<Map<String,Object>> getSkyLandByActivityId(@Param("activityId") int activityId);
+	/**
+	 * 新增天地战场明细记录
+	 * Param int activityId 活动ID,int memberId	成员ID
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int saveSkyLand(@Param("activityId") int activityId,@Param("memberId") int memberId);
+	/**
+	 * 更新天地活动记录
+	 * Map<String, Object> params 活动信息
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int updateSkyLand(Map<String, Object> params);
 }
