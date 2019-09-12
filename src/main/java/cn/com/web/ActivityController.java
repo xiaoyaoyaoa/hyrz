@@ -126,17 +126,11 @@ public class ActivityController{
 			//查询本服争霸详细数据
 			List<Map<String,Object>> conquesList = activityService.getConquestByActivityId(activityId);
 			model.addAttribute("conquesList",conquesList);
-
-			List<Map<String,Object>> mainConquesList = activityService.getMainConquestByActivityId(activityId);
-			model.addAttribute("mainConquesList",mainConquesList);
 			return "activity/span-conquest";
 
 		}else if(activity.getActivityType() == 5){//跨服争霸
 			List<Map<String,Object>> conquesList = activityService.getConquestByActivityId(activityId);
 			model.addAttribute("conquesList",conquesList);
-
-			List<Map<String,Object>> mainConquesList = activityService.getMainConquestByActivityId(activityId);
-			model.addAttribute("mainConquesList",mainConquesList);
 			return "activity/span-conquest";
 		}
 		model.addAttribute("errorMsg","活动类型无法识别");
@@ -167,15 +161,6 @@ public class ActivityController{
 	public int updateConquest(Model model, @RequestParam Map<String,Object> params){
 		int update_flag = 0;//是否修改成功 0修改失败 1修改成功
 		if (null != params && params.size()>0 && activityService.updateConquest(params)>0) {
-			update_flag = 1;
-		}
-		return update_flag;
-	}
-	@ResponseBody
-	@RequestMapping("/updateMainConquest")
-	public int updateMainConquest(Model model, @RequestParam Map<String,Object> params){
-		int update_flag = 0;//是否修改成功 0修改失败 1修改成功
-		if (null != params && params.size()>0 && activityService.updateMainConquest(params)>0) {
 			update_flag = 1;
 		}
 		return update_flag;

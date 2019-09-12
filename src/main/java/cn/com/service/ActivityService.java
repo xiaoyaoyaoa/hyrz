@@ -100,7 +100,7 @@ public interface ActivityService{
 	 * Param int activityId 活动ID,int memberId	成员ID type 争霸类型0本服1跨服
 	 * @return int 操作标示 0失败其余成功
 	 */
-	int saveConquest(int activityId,int memberId,int conType,int conSession);
+	int saveConquest(int activityId,int memberId,int conType);
 	/**
 	 * 通过活动ID获取组织争霸详细数据
 	 * Param activityId	活动ID
@@ -113,23 +113,4 @@ public interface ActivityService{
 	 * @return int 操作标示 0失败其余成功
 	 */
 	int updateConquest(Map<String, Object> params);
-
-	/**
-	 * 新增争霸活动记录
-	 * Param int activityId 活动ID,int memberId	成员ID type 争霸类型0本服1跨服
-	 * @return int 操作标示 0失败其余成功
-	 */
-	int saveMainConquest(int activityId,int memberId,int conType);
-	/**
-	 * 通过活动ID获取组织争霸数据
-	 * Param activityId	活动ID
-	 * @return List<Map<String,Object>> 组织争霸数据
-	 */
-	List<Map<String,Object>> getMainConquestByActivityId(int activityId);
-	/**
-	 * 更新争霸主活动记录
-	 * Map<String, Object> params 活动信息
-	 * @return int 操作标示 0失败其余成功
-	 */
-	int updateMainConquest(Map<String, Object> params);
 }

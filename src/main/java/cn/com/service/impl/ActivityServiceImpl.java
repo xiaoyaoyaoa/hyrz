@@ -97,30 +97,18 @@ public class ActivityServiceImpl implements ActivityService{
 			}else if(activityType == 4){//4本服争霸
 				//本服组织争霸表中每人插入一条基础数据(包含本周四场的记录)
 				for(Member member: memberList){
-					if (activityService.saveMainConquest(activityId, member.getMemberId(),0) <=0 ) {
+					if (activityService.saveConquest(activityId, member.getMemberId(),0) <=0 ) {
 						add_flag = -1;
 						return add_flag;
-					}
-					for (int i = 1; i <= 4 ; i++) {
-						if (activityService.saveConquest(activityId, member.getMemberId(),0,i) <=0 ) {
-							add_flag = -1;
-							return add_flag;
-						}
 					}
 
 				};
 			}else if(activityType == 5){//5跨服争霸
 				//跨服组织争霸表中每人插入一条基础数据(包含本周四场的记录)
 				for(Member member: memberList){
-					if (activityService.saveMainConquest(activityId, member.getMemberId(),1) <=0 ) {
+					if (activityService.saveConquest(activityId, member.getMemberId(),1) <=0 ) {
 						add_flag = -1;
 						return add_flag;
-					}
-					for (int i = 1; i <= 4 ; i++) {
-						if (activityService.saveConquest(activityId, member.getMemberId(),1,i) <=0 ) {
-							add_flag = -1;
-							return add_flag;
-						}
 					}
 
 				};
@@ -170,8 +158,8 @@ public class ActivityServiceImpl implements ActivityService{
 		return activityMapper.saveFightScore(activityId, memberId, beginDate,endDate,memberBeginFight);
 	}
 	@Override
-	public int saveConquest(int activityId,int memberId,int conType,int conSession) {
-		return activityMapper.saveConquest(activityId,memberId,conType,conSession);
+	public int saveConquest(int activityId,int memberId,int conType) {
+		return activityMapper.saveConquest(activityId,memberId,conType);
 	}
 	@Override
 	public List<Map<String, Object>>  getConquestByActivityId(int activityId) {
@@ -180,18 +168,5 @@ public class ActivityServiceImpl implements ActivityService{
 	@Override
 	public int updateConquest(Map<String, Object> params) {
 		return activityMapper.updateConquest(params);
-	}
-	@Override
-	public int saveMainConquest(int activityId,int memberId,int conType) {
-		return activityMapper.saveMainConquest(activityId,memberId,conType);
-	}
-
-	@Override
-	public List<Map<String, Object>>  getMainConquestByActivityId(int activityId) {
-		return activityMapper.getMainConquestByActivityId(activityId);
-	}
-	@Override
-	public int updateMainConquest(Map<String, Object> params) {
-		return activityMapper.updateMainConquest(params);
 	}
 }
