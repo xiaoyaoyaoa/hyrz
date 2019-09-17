@@ -67,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.saveMember(params);
 	}
 	@Override
-	public int deleteMember(Map<String, Object> params) {
-		return memberMapper.deleteMember(params);
+	public int deleteMember(int memberId) {
+		return memberMapper.deleteMember(memberId);
 	}
 }

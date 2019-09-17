@@ -4,6 +4,7 @@ package cn.com.web;
 import java.util.List;
 import java.util.Map;
 
+import cn.com.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,11 +86,11 @@ public class MemberController{
 	}
 	@ResponseBody
 	@RequestMapping("/deleteMember")
-	public int deleteMember(Model model, @RequestParam Map<String,Object> params){
-		int add_flag = 0;//是否修改成功 0修改失败 1修改成功
-		if (null != params && params.size()>0 && memberService.deleteMember(params)>0) {
-			add_flag = 1;
+	public int deleteMember(Model model, @RequestParam Integer memberId){
+		int delete_flag = 0;//是否修改成功 0修改失败 1修改成功
+		if (!StringUtil.isEmpty(memberId) && memberService.deleteMember(memberId)>0) {
+			delete_flag = 1;
 		}
-		return add_flag;
+		return delete_flag;
 	}
 }

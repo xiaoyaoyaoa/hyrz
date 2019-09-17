@@ -205,5 +205,9 @@ public class ActivityServiceImpl implements ActivityService{
 	public int updateNinja(Map<String, Object> params) {
 		return activityMapper.updateNinja(params);
 	}
+	@Override
+	public int deleteActivity(int activityId) {
+		return activityMapper.deleteActivity(activityId);
+	}
 
 }

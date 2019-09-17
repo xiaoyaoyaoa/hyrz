@@ -62,7 +62,7 @@ th, td {font-weight: normal;text-align: left;}
           <th width="100" scope="col">活动类型</th>
           <th width="120" scope="col">活动日期</th>
           <th width="400" scope="col">活动名称</th>
-          <th width="100" scope="col">操作</th>
+          <th width="120" scope="col">操作</th>
         </tr>
         <tr th:each="act,actStat : ${actList}">
           <td  th:switch="${act.activityType}">
@@ -81,7 +81,10 @@ th, td {font-weight: normal;text-align: left;}
             <p th:text="${act.activityName}"></p>
           </td>
           <td>
-			<p><a href="javascript:void(0);" th:href="@{/activity/edit/}+${organization.organizationId}+'/'+${act.activityId}+'/'" class="c5">编辑</a></p>
+			<p>
+                <a href="javascript:void(0);" th:href="@{/activity/edit/}+${organization.organizationId}+'/'+${act.activityId}+'/'" class="c5">编辑</a>
+                <a href="javascript:void(0);" th:onclick="'rem_activity('+${act.activityId}+');'">删除</a>
+            </p>
 			
 		  </td>
         </tr>   
@@ -146,6 +149,25 @@ function search_record(){
 	var search = $("#search_record");
 	search.submit();
 }
+function rem_activity(activityId){
+    var url = path+"/activity/deleteActivity"
+    $.ajax({
+        url:url,
+        data:{activityId:activityId},
+        type:"post",
+        dataType:"text",
+        success:function(data){
+            if(data && data == 1){
+                alert("删除成功!");
+                window.location.reload();
+            }
+        },
+        error:function(){
+            alert("系统繁忙,修改失败,请稍后重试!");
+        }
+    });
+}
+
 $(function(){
 	$("#blackbox").click(function(){
 		$("#add_activity").hide();

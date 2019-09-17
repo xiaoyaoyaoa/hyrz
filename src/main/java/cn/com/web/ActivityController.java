@@ -195,4 +195,13 @@ public class ActivityController{
 		}
 		return update_flag;
 	}
+	@ResponseBody
+	@RequestMapping("/deleteActivity")
+	public int deleteActivity(Model model, @RequestParam Integer activityId){
+		int delete_flag = 0;//是否修改成功 0修改失败 1修改成功
+		if (!StringUtil.isEmpty(activityId) && activityService.deleteActivity(activityId)>0) {
+			delete_flag = 1;
+		}
+		return delete_flag;
+	}
 }

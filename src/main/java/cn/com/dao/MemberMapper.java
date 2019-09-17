@@ -83,5 +83,5 @@ public interface MemberMapper {
 	 * Param Map<String, Object> params	成员信息
 	 * @return int 操作标示 0失败其余成功
 	 */
-	int deleteMember(Map<String,Object> params);
+	int deleteMember(@Param("memberId") int memberId);
 }

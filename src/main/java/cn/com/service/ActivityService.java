@@ -151,4 +151,12 @@ public interface ActivityService{
 	 * @return int 操作标示 0失败其余成功
 	 */
 	int updateNinja(Map<String, Object> params);
+
+    /**
+     * 删除活动
+     * Param int activityId 活动ID
+     * @return int 操作标示 0失败其余成功
+     */
+    int deleteActivity(int activityId);
+
 }

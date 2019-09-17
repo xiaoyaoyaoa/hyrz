@@ -13,7 +13,7 @@
 
 <!-- 通过组织ID获取组织活动详情 -->
  <select id="getActByOrganizationId" resultType="cn.com.model.Activity">
-    SELECT * FROM t_activity WHERE organizationId = #{organizationId} 
+    SELECT * FROM t_activity WHERE organizationId = #{organizationId}  and status = 1
     <if test="activityType != null and activityType != 'all'">
       and activityType=#{activityType}
     </if>
@@ -190,5 +190,11 @@
 	update t_defect_ninja set firstDo=#{firstDo},firstType=#{firstType},firstHarm=#{firstHarm},
 							   secondDo=#{secondDo},secondType=#{secondType},secondHarm=#{secondHarm},score=#{score}
 	where joinId = #{joinId}
+</update>
+
+<!-- 删除活动 -->
+<update id="deleteActivity"  parameterType="java.util.HashMap">
+	update t_activity set status=0
+	where activityId = #{activityId}
 </update>
 </mapper>
