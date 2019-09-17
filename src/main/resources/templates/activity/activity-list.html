@@ -29,28 +29,36 @@ th, td {font-weight: normal;text-align: left;}
 <input type="hidden" th:value="${organization.organizationId}" id="organizationId"/>
 <form id="search_record" th:action="@{/activity/list/}+${organization.organizationId}+'/'">	
 	<select name="activityType">
-	  	<option value="all" selected="selected">全部类型</option>
-	  	<option value="0">战力涨幅</option>
-	  	<option value="1">本服要塞</option>
-	  	<option value="2">跨服要塞</option>
-	  	<option value="3">天地战场</option>
-	  	<option value="4">本服争霸</option>
-	  	<option value="5">跨服争霸</option>
-	  	<option value="6">其他活动</option>
+	  	<option value="all">全部类型</option>
+	  	<option value="0" th:selected="${activityType eq '0'}" >战力涨幅</option>
+	  	<option value="1" th:selected="${activityType eq '1'}" >本服要塞</option>
+	  	<option value="2" th:selected="${activityType eq '2'}" >跨服要塞</option>
+	  	<option value="3" th:selected="${activityType eq '3'}" >天地战场</option>
+	  	<option value="4" th:selected="${activityType eq '4'}" >本服争霸</option>
+	  	<option value="5" th:selected="${activityType eq '5'}" >跨服争霸</option>
+	  	<option value="6" th:selected="${activityType eq '6'}" >叛忍</option>
 	</select>
-	<select name="activityDate" >
+	从
+    <select name="activityDate" >
 	   <option value="all" th:selected="${activityDate == 'all'}">所有日期</option>
 	   <option th:each="actDate,actDateStat : ${actDateList}" th:selected="${#dates.format(actDate.activityDate,'yyyy-MM-dd')} eq ${activityDate}" 
 	   	th:value="${actDate.activityDate}" th:text="${actDate.activityDate}">
 	   </option>
 	</select>
+    至
+    <select name="activityEndDate" >
+        <option value="all" th:selected="${activityEndDate == 'all'}">所有日期</option>
+        <option th:each="actDate,actDateStat : ${actDateList}" th:selected="${#dates.format(actDate.activityDate,'yyyy-MM-dd')} eq ${activityEndDate}"
+                th:value="${actDate.activityDate}" th:text="${actDate.activityDate}">
+        </option>
+    </select>
 	<input type="button" value="查询" onclick="search_record();" />
 </form>
 <input type="button" value="新增活动" id="to_add_activity" />
 	<table width="763" border="0" cellspacing="0" cellpadding="0" class="table_slider">
         <tbody>
         <tr>
-          <!-- (0升战,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6其他活动) -->
+          <!-- (0升战,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6叛忍) -->
           <th width="100" scope="col">活动类型</th>
           <th width="120" scope="col">活动日期</th>
           <th width="400" scope="col">活动名称</th>
@@ -64,7 +72,7 @@ th, td {font-weight: normal;text-align: left;}
           	<p th:case="3" >天地战场</p>
           	<p th:case="4" >本服争霸</p>
           	<p th:case="5" >跨服争霸</p>
-          	<p th:case="6" >其他活动</p>
+          	<p th:case="6" >叛忍</p>
           </td>
           <td>
           	<p th:text="${#dates.format(act.activityDate,'yyyy-MM-dd')}"></p>
@@ -98,7 +106,7 @@ th, td {font-weight: normal;text-align: left;}
 			   <option value="3" >天地战场</option>
 			   <option value="4" >本服争霸</option>
 			   <option value="5" >跨服争霸</option>
-			   <option value="6" >其他活动</option>
+			   <option value="6" >叛忍</option>
 			</select>
           </td>
         </tr>   

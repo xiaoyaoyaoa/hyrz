@@ -36,8 +36,8 @@ public class ActivityServiceImpl implements ActivityService{
 	}
 
 	@Override
-	public List<Activity> getActByOrganizationId(int organizationId,String activityType,String activityDate) {
-		return activityMapper.getActByOrganizationId(organizationId,activityType,activityDate);
+	public List<Activity> getActByOrganizationId(int organizationId,String activityType,String activityDate,String activityEndDate) {
+		return activityMapper.getActByOrganizationId(organizationId,activityType,activityDate,activityEndDate);
 	}
 	@Override
 	public int saveActivity(Activity activity) {
@@ -52,7 +52,7 @@ public class ActivityServiceImpl implements ActivityService{
 			}
 			//查询组织有效成员列表
 			List<Member> memberList = memberService.getMemberList(organizationId,1,1);
-			//活动类型(0战力涨幅,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6其他活动)
+			//活动类型(0战力涨幅,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6叛忍)
 			if(activityType == 0){//0战力涨幅
 				//战力涨幅比较特殊,活动时间为范围,以7天为例
 				for(Member member: memberList){
@@ -112,6 +112,17 @@ public class ActivityServiceImpl implements ActivityService{
 					}
 
 				};
+			}else if(activityType == 6){//6叛忍
+				//叛忍活动表中每人插入一条基础数据
+				for(Member member: memberList){
+					if (activityService.saveDefectNinja(activityId, member.getMemberId()) <=0 ) {
+						add_flag = -1;
+						return add_flag;
+					}
+
+				};
+			}else{
+				return -1;
 			}
 		}
 		return add_flag;
@@ -181,4 +192,18 @@ public class ActivityServiceImpl implements ActivityService{
 	public int updateSkyLand(Map<String, Object> params) {
 		return activityMapper.updateSkyLand(params);
 	}
+
+	@Override
+	public int saveDefectNinja(int activityId,int memberId) {
+		return activityMapper.saveDefectNinja(activityId,memberId);
+	}
+	@Override
+	public List<Map<String, Object>>  getDefectNinjaByActivityId(int activityId) {
+		return activityMapper.getDefectNinjaByActivityId(activityId);
+	}
+	@Override
+	public int updateNinja(Map<String, Object> params) {
+		return activityMapper.updateNinja(params);
+	}
+
 }

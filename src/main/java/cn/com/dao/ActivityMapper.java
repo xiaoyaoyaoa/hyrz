@@ -33,7 +33,7 @@ public interface ActivityMapper {
 	 * @return List<Activity> 组织活动详情
 	 */
 	List<Activity> getActByOrganizationId(@Param("organizationId") int organizationId,
-			@Param("activityType") String activityType,@Param("activityDate") String activityDate);
+			@Param("activityType") String activityType,@Param("activityDate") String activityDate,@Param("activityEndDate") String activityEndDate);
 	
 	/**
 	 * 新增活动记录
@@ -145,4 +145,25 @@ public interface ActivityMapper {
 	 * @return int 操作标示 0失败其余成功
 	 */
 	int updateSkyLand(Map<String, Object> params);
+	/**
+	 * 新增叛忍活动明细记录
+	 * Param int activityId 活动ID,int memberId	成员ID
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int saveDefectNinja(@Param("activityId") int activityId,@Param("memberId") int memberId);
+
+	/**
+	 * 通过活动ID获取叛忍数据
+	 * Param activityId	活动ID
+	 * @return List<Map<String,Object>> 叛忍数据
+	 */
+	List<Map<String,Object>> getDefectNinjaByActivityId(int activityId);
+
+	/**
+	 * 更新叛忍活动记录
+	 * Map<String, Object> params 活动信息
+	 * @return int 操作标示 0失败其余成功
+	 */
+	int updateNinja(Map<String, Object> params);
+
 }

@@ -16,7 +16,7 @@ public class Activity {
 	@Id
 	@Column(name = "activityId", unique = true, nullable = false)
 	public Integer activityId;//活动ID
-	public Integer activityType;//活动类型(0战力涨幅,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6其他活动)
+	public Integer activityType;//活动类型(0战力涨幅,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6叛忍)
 	public Date activityDate;//活动日期
 	public String activityName;//活动名称
 	public Integer organizationId;//组织ID

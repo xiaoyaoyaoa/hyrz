@@ -8,7 +8,7 @@
 </select>
 <!-- 通过组织ID获取组织活动日期 -->
  <select id="getActDateByOrganizationId" resultType="java.util.HashMap">
-    SELECT DISTINCT activityDate FROM t_activity where organizationId = #{organizationId} ORDER BY activityDate DESC 
+    SELECT DISTINCT activityDate FROM t_activity where organizationId = #{organizationId} ORDER BY activityDate DESC
 </select>
 
 <!-- 通过组织ID获取组织活动详情 -->
@@ -18,10 +18,16 @@
       and activityType=#{activityType}
     </if>
     <if test="activityDate != null and activityDate != 'all'">
-      and activityDate=DATE_FORMAT(#{activityDate}, '%Y-%m-%d')
-    </if>    
-    
-    ORDER BY activityDate DESC,activityType ASC 
+	<![CDATA[
+		and activityDate>=DATE_FORMAT(#{activityDate}, '%Y-%m-%d')
+	]]>
+    </if>
+	<if test="activityEndDate != null and activityEndDate != 'all'">
+	<![CDATA[
+	   and activityDate<=DATE_FORMAT(#{activityEndDate}, '%Y-%m-%d')
+    ]]>
+	</if>
+    ORDER BY activityDate DESC,activityType ASC
 </select>
 <!-- 新增活动记录 -->
 <insert id="saveActivity"  parameterType="cn.com.model.Activity" keyColumn="id" keyProperty="activityId" useGeneratedKeys="true">
@@ -160,5 +166,29 @@
 <update id="updateSkyLand" parameterType="java.util.Map">
     update t_sky_land_battle set fightScore=#{fightScore},score=#{score}
     where joinId = #{joinId}
+</update>
+
+<!-- 新增叛忍记录 -->
+<insert id="saveDefectNinja"  parameterType="java.util.HashMap">
+	INSERT INTO t_defect_ninja(activityId,memberId)
+	VALUES
+	(
+		#{activityId},
+		#{memberId}
+	);
+</insert>
+
+<!-- 通过活动ID获取天地战场详细数据 -->
+<select id="getDefectNinjaByActivityId"  resultType="java.util.HashMap">
+	SELECT tm.memberNick,tdn.* FROM t_defect_ninja tdn,t_member tm WHERE  tdn.memberId = tm.memberId
+		AND tdn.activityId = #{activityId}
+	ORDER BY tdn.memberId ASC
+</select>
+
+<!-- 更新叛忍活动记录 -->
+<update id="updateNinja" parameterType="java.util.Map">
+	update t_defect_ninja set firstDo=#{firstDo},firstType=#{firstType},firstHarm=#{firstHarm},
+							   secondDo=#{secondDo},secondType=#{secondType},secondHarm=#{secondHarm},score=#{score}
+	where joinId = #{joinId}
 </update>
 </mapper>

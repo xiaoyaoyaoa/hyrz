@@ -43,23 +43,28 @@ public class ActivityController{
 		model.addAttribute("organization",organization);
 		String activityType = request.getParameter("activityType");
 		String activityDate = request.getParameter("activityDate");
+		String activityEndDate = request.getParameter("activityEndDate");
 		if (StringUtil.isEmpty(activityType)) {
 			activityType = "all";
 		}
 		if (StringUtil.isEmpty(activityDate)) {
 			activityDate = "all";
 		}
+		if (StringUtil.isEmpty(activityEndDate)) {
+			activityEndDate = "all";
+		}
 		//查询活动类型列表
-		List<Map<String,Object>> actTypeList = activityService.getActTypeByOrganizationId(organizationId);
+		//List<Map<String,Object>> actTypeList = activityService.getActTypeByOrganizationId(organizationId);
 		//查询活动日期列表
 		List<Map<String,Object>> actDateList = activityService.getActDateByOrganizationId(organizationId);
 		//查询活动列表
-		List<Activity> actList = activityService.getActByOrganizationId(organizationId,activityType,activityDate);
-		model.addAttribute("actTypeList",actTypeList);
+		List<Activity> actList = activityService.getActByOrganizationId(organizationId,activityType,activityDate,activityEndDate);
+		//model.addAttribute("actTypeList",actTypeList);
 		model.addAttribute("actDateList",actDateList);
 		model.addAttribute("actList",actList);
 		model.addAttribute("activityType",activityType);
 		model.addAttribute("activityDate",activityDate);
+		model.addAttribute("activityEndDate",activityEndDate);
 		return "activity/activity-list";
 	}
 	@ResponseBody
@@ -103,7 +108,7 @@ public class ActivityController{
 			return "error";
 		}
 		model.addAttribute("activity",activity);
-		//活动类型(0战力涨幅,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6其他活动)
+		//活动类型(0战力涨幅,1本服要塞,2跨服要塞,3天地战场,4本服争霸,5跨服争霸,6叛忍)
 		if(activity.getActivityType() == 0){//战力涨幅
 			//根据活动日期查询战力详细数据
 			List<Map<String,Object>> figthList = activityService.getFightByActivityId(activityId);
@@ -135,6 +140,10 @@ public class ActivityController{
 			List<Map<String,Object>> conquesList = activityService.getConquestByActivityId(activityId);
 			model.addAttribute("conquesList",conquesList);
 			return "activity/span-conquest";
+		}else if(activity.getActivityType() == 6){//叛忍
+			List<Map<String,Object>> ninjaList = activityService.getDefectNinjaByActivityId(activityId);
+			model.addAttribute("ninjaList",ninjaList);
+			return "activity/defect-ninja";
 		}
 		model.addAttribute("errorMsg","活动类型无法识别");
 		return "error";
@@ -177,5 +186,13 @@ public class ActivityController{
 		}
 		return update_flag;
 	}
-
+	@ResponseBody
+	@RequestMapping("/updateNinja")
+	public int updateNinja(Model model, @RequestParam Map<String,Object> params){
+		int update_flag = 0;//是否修改成功 0修改失败 1修改成功
+		if (null != params && params.size()>0 && activityService.updateNinja(params)>0) {
+			update_flag = 1;
+		}
+		return update_flag;
+	}
 }
