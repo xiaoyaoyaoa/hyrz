@@ -2,8 +2,10 @@ package cn.com.web;
 
 
 import cn.com.model.Organization;
+import cn.com.model.User;
 import cn.com.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ public class IndexController{
 
 	@RequestMapping("/index")
 	public String index(Model model){
+		User user = LoginController.getUser();
+		model.addAttribute("user",user);
 		//此处展示组织列表
 		List<Organization> organizationList = memberService.getAllOrganizations();
 		model.addAttribute("organizationList",organizationList);

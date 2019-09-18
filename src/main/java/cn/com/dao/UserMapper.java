@@ -8,4 +8,6 @@ import cn.com.model.User;
 @Mapper
 public interface UserMapper {
 	User getUserById(@Param("id") int id);
+	User findByUsername(@Param("username") String id);
+
 }
