@@ -6,8 +6,6 @@ import javax.persistence.*;
 @Table(name = "T_USER")
 public class User {
 
-    @Id
-    @Column(name = "memberId", unique = true, nullable = false)
     private Integer id;
     private String username;    //用户名
     private String password;    //用户密码
