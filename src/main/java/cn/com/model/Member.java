@@ -20,7 +20,6 @@ public class Member {
 	public Integer memberType;//成员类型(0离开,1存在)
 	public Integer memberStatus;//成员状态(0学员,1成员)
 	public Date memberDate;//加入时间
-	public Integer loyalty;//忠诚度(满分100)
 	public Integer getMemberId() {
 		return memberId;
 	}
@@ -69,11 +68,5 @@ public class Member {
 	public void setMemberDate(Date memberDate) {
 		this.memberDate = memberDate;
 	}
-	public Integer getLoyalty() {
-		return loyalty;
-	}
-	public void setLoyalty(Integer loyalty) {
-		this.loyalty = loyalty;
-	}
-	
+
 }

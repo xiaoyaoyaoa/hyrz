@@ -49,15 +49,21 @@
 			<table width="400" border="0" cellspacing="0" cellpadding="0" class="member-table"><tbody>
 			<tr>
 				<th scope="row">成员姓名：</th>
-				<td colspan="4"><input type="text" name="memberName" style="width:106px;padding-left:4px;"></td>
+				<td colspan="4"><input type="text" name="memberName" style="width:106px;padding-left:4px;">
+					<p class="red" id="msg_name" ></p>
+				</td>
 			</tr>
 			<tr>
 				<th width="128" scope="row">游戏昵称：</th>
-				<td colspan="4"><input type="text" name="memberNick" style="width:106px;padding-left:4px;"></td>
+				<td colspan="4"><input type="text" name="memberNick" style="width:106px;padding-left:4px;">
+					<p class="red" id="msg_nick" ></p>
+				</td>
 			</tr>
 			<tr>
 				<th width="128" scope="row">成员职位：</th>
-				<td colspan="4"><input type="text" name="memberJob"  style="width:106px;padding-left:4px;" ></td>
+				<td colspan="4"><input type="text" name="memberJob"  style="width:106px;padding-left:4px;" >
+					<p class="red" id="msg_job" ></p>
+				</td>
 			</tr>
 			<tr>
 				<th scope="row">成员类型：</th>
@@ -77,6 +83,7 @@
 				<th scope="row">加入日期：</th>
 				<td colspan="4">
 					<input name="memberDate" onfocus="WdatePicker()" readonly="true" type="text" style="width:110px;">
+					<p class="red" id="msg_date" ></p>
 				</td>
 			</tr>
 			<tr>
@@ -114,7 +121,7 @@
 
     $(function(){
         $("#blackbox").click(function(){
-            $("#add_activity").hide();
+            $("#add_member").hide();
             $("#blackbox").hide();
         });
 
@@ -129,6 +136,34 @@
         $("#add_member_click").click(function(){
             var $form = $("#addMemberForm");
             var member_data = $form.serializeArray();
+            var memberName = $('input[name="memberName"]').val();
+            if(memberName == ""){
+                $("#msg_name").html("请输入成员姓名!");
+                return;
+            }else{
+                $("#msg_name").html("");
+            }
+            var memberNick = $('input[name="memberNick"]').val();
+            if(memberNick == ""){
+                $("#msg_nick").html("请输入成员昵称!");
+                return;
+            }else{
+                $("#msg_nick").html("");
+            }
+            var memberJob = $('input[name="memberJob"]').val();
+            if(memberJob == ""){
+                $("#msg_job").html("请输入成员职位!");
+                return;
+            }else{
+                $("#msg_job").html("");
+            }
+            var memberDate = $('input[name="memberDate"]').val();
+            if(memberDate == ""){
+                $("#msg_date").html("请输入加入时间!");
+                return;
+            }else{
+                $("#msg_date").html("");
+            }
             var url = path+"/member/saveMember"
             $.ajax({
                 url:url,

@@ -34,7 +34,6 @@
 		,memberType=#{memberType}
 		,memberStatus=#{memberStatus}
 		,memberDate=#{memberDate}
-		,loyalty=#{loyalty}
 	where memberId = #{memberId}
 </update>
 <!-- 通过成员ID获取成员战力列表 -->
