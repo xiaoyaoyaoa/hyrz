@@ -11,7 +11,7 @@ import cn.com.model.Member;
 import cn.com.model.MemberFight;
 import cn.com.model.Organization;
 import cn.com.service.MemberService;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -50,6 +50,7 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.getMemberFightList(memberId);
 	}
 
+	@Transactional
 	@Override
 	public int updateMemberFight(Map<String, Object> params) {
 		int fight = memberMapper.updateMemberFight(params);

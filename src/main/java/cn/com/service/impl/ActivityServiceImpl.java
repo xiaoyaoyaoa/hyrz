@@ -14,7 +14,7 @@ import cn.com.model.MemberFight;
 import cn.com.service.ActivityService;
 import cn.com.service.MemberService;
 import cn.com.util.StringUtil;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -39,6 +39,7 @@ public class ActivityServiceImpl implements ActivityService{
 	public List<Activity> getActByOrganizationId(int organizationId,String activityType,String activityDate,String activityEndDate) {
 		return activityMapper.getActByOrganizationId(organizationId,activityType,activityDate,activityEndDate);
 	}
+	@Transactional
 	@Override
 	public int saveActivity(Activity activity) {
 		int add_flag = activityMapper.saveActivity(activity);

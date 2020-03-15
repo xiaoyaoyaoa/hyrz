@@ -31,9 +31,9 @@ public class ActivityController{
 	public static final Logger logger = LoggerFactory.getLogger(ActivityController.class);
 
 	@Autowired MemberService memberService;
-	@Autowired ActivityService activityService;
-	
-	@RequestMapping("/list/{organizationId}/")
+    @Autowired ActivityService activityService;
+
+    @RequestMapping("/list/{organizationId}/")
 	public String list(Model model, @PathVariable int organizationId,HttpServletRequest request){
 		Organization organization = memberService.getOrganizationById(organizationId);
 		if(null == organization){
