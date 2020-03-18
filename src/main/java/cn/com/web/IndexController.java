@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RolesAllowed(User.role_admin)
 @Controller
 public class IndexController{
 	@Autowired MemberService memberService;

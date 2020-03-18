@@ -44,10 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception { //配置策略
-        http.csrf().disable();
-        http.authorizeRequests().
-                antMatchers("/static/**").permitAll().anyRequest().authenticated().
-                and().formLogin().loginPage("/login").defaultSuccessUrl(path+"index").permitAll().successHandler(loginSuccessHandler()).
+        http.csrf().disable().headers().defaultsDisabled().disable().authorizeRequests().anyRequest().permitAll().and()
+                .formLogin().loginPage("/login").defaultSuccessUrl(path+"index").permitAll().successHandler(loginSuccessHandler()).
                 and().logout().permitAll().logoutSuccessHandler(logoutSuccessHandler()).invalidateHttpSession(true).
                 deleteCookies("JSESSIONID").logoutSuccessHandler(logoutSuccessHandler()).
                 and().sessionManagement().maximumSessions(10).expiredUrl("/login");
