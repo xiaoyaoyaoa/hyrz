@@ -4,8 +4,10 @@ package cn.com.web;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 
+import cn.com.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import cn.com.service.MemberService;
 import cn.com.util.DateUtils;
 import cn.com.util.StringUtil;
 
-
+@RolesAllowed(User.role_admin)
 @Controller
 @RequestMapping("/activity")
 public class ActivityController{

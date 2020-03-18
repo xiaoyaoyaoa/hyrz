@@ -5,10 +5,9 @@
     <title>错误页</title> 
 </head> 
 <style>
-.member-table th{border:1px solid #FF0033;text-align:center;padding-top:8px;padding-bottom:8px;}
-.member-table td{border:1px solid #ededed;text-align:center;padding-top:8px;padding-bottom:8px;}
 </style>
-<body> 
-<div th:text="${errorMsg}">错误</div>
-</body> 
+<body>
+<div th:replace="common/top::top_bar"></div>
+错误页面
+</body>
 </html>

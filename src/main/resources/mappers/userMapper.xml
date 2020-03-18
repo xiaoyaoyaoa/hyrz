@@ -9,4 +9,8 @@
     <select id="findByUsername" resultType="cn.com.model.User">
         select * from t_user t where t.username = #{username}
     </select>
+
+    <select id="findById" resultType="cn.com.model.Role">
+        SELECT * FROM t_roles tr WHERE tr.roleid =  #{roleid}
+    </select>
 </mapper>

@@ -4,6 +4,7 @@ package cn.com.web;
 import java.util.List;
 import java.util.Map;
 
+import cn.com.model.User;
 import cn.com.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,9 @@ import cn.com.model.MemberFight;
 import cn.com.model.Organization;
 import cn.com.service.MemberService;
 
+import javax.annotation.security.RolesAllowed;
 
+@RolesAllowed(User.role_admin)
 @Controller
 @RequestMapping("/member")
 public class MemberController{

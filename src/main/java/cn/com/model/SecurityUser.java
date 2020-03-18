@@ -18,18 +18,8 @@ public class SecurityUser extends User implements UserDetails {
             this.setId(user.getId());
             this.setUsername(user.getUsername());
             this.setPassword(user.getPassword());
+            this.setAuthorities(user.getAuthorities());
         }
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        String username = this.getUsername();
-        if (username != null) {
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(username);
-            authorities.add(authority);
-        }
-        return authorities;
     }
 
     //账户是否未过期,过期无法验证

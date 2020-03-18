@@ -3,6 +3,7 @@ package cn.com.web;
 
 import java.util.List;
 
+import cn.com.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import cn.com.model.Organization;
 import cn.com.service.MemberService;
 
+import javax.annotation.security.RolesAllowed;
 
+@RolesAllowed(User.role_admin)
 @Controller
 @RequestMapping("/organization")
 public class OrganizationController{

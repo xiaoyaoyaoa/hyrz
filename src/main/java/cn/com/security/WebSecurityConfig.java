@@ -1,6 +1,7 @@
 package cn.com.security;
 
 import cn.com.dao.UserMapper;
+import cn.com.model.Role;
 import cn.com.model.SecurityUser;
 import cn.com.model.User;
 import org.slf4j.Logger;
@@ -10,11 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,9 +31,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Configuration      // 声明为配置类
 @EnableWebSecurity      // 启用 Spring Security web 安全的功能
+@EnableGlobalMethodSecurity(jsr250Enabled = true) //启用权限管理
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
@@ -76,10 +82,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
                 User userDetails = (User) authentication.getPrincipal();
                 logger.info("用户: " + userDetails.getUsername() + "登陆成功");
+
                 super.onAuthenticationSuccess(request, response, authentication);
             }
         };
     }
+
+    public static final List<GrantedAuthority> USER = AuthorityUtils.createAuthorityList(User.role_user);
+    public static final List<GrantedAuthority> ADMIN = AuthorityUtils.createAuthorityList(User.role_admin);
+
     @Bean
     public UserDetailsService userDetailsService() {    //用户登录实现
         return new UserDetailsService() {
@@ -90,6 +101,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
                 User user = userMapper.findByUsername(s);
                 if (user == null) throw new UsernameNotFoundException("Username " + s + " not found");
+                Role role = userMapper.findById(user.getRoles_id());
+                if(null != role){
+                    user.setAuthorities(AuthorityUtils.createAuthorityList(role.getRolename()));
+                }else{
+                    user.setAuthorities(USER);
+                }
                 return new SecurityUser(user);
             }
         };
