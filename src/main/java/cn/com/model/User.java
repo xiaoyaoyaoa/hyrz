@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "T_USER")
@@ -21,6 +22,23 @@ public class User implements Serializable {
     private String username;    //用户名
     private String password;    //用户密码
     private Integer roles_id;   //权限ID
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(authorities, user.authorities) &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(roles_id, user.roles_id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(authorities, id, username, password, roles_id);
+    }
 
     public Integer getId() {
         return id;
