@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.com.model.Member;
 import cn.com.model.MemberFight;
 import cn.com.model.Organization;
+import cn.com.page.PageResult;
 
 public interface MemberService{
 	/**
@@ -31,6 +32,13 @@ public interface MemberService{
 	 * @return List<Member>	成员列表
 	 */	
 	List<Member> getMemberList(int organizationId,int memberType,int memberStatus);
+
+	/**
+	 * 通过组织ID获取成员列表 page
+	 * Param organizationId	组织ID type 成员类型(-1所有 0离开,1存在) 所有 status 成员状态(-1所有 0学员,1成员)
+	 * @return PageResult	成员列表
+	 */
+	PageResult getMemberPage(int organizationId, int memberType, int memberStatus,int pageNum,int pageSize);
 	/**
 	 * 修改成员信息
 	 * Param Map<String, Object> params	成员信息

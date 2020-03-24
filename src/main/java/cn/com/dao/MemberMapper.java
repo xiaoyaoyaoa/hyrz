@@ -35,6 +35,19 @@ public interface MemberMapper {
 	 * @return List<Member>	成员列表
 	 */	
 	List<Member> getMemberList(@Param("organizationId") int organizationId,@Param("memberType") int memberType,@Param("memberStatus") int memberStatus);
+
+	/**
+	 * 分页查询用户
+	 * @return
+	 */
+	List<Member> getMemberPage(@Param("organizationId") int organizationId,@Param("memberType") int memberType,
+							   @Param("memberStatus") int memberStatus,@Param("start") int start,@Param("pageSize") int pageSize);
+	/**
+	 * 分页查询用户(计数)
+	 * @return
+	 */
+	int getMemberCount(@Param("organizationId") int organizationId,@Param("memberType") int memberType,@Param("memberStatus") int memberStatus);
+
 	/**
 	 * 修改成员信息
 	 * Param Map<String, Object> params	成员信息

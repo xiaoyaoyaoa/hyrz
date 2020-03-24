@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.com.model.User;
+import cn.com.page.PageResult;
 import cn.com.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,14 +28,21 @@ import javax.annotation.security.RolesAllowed;
 public class MemberController{
 	@Autowired MemberService memberService;
 	@RequestMapping("/list/{organizationId}/")
-	public String list(Model model, @PathVariable int organizationId){
+	public String list(Model model, @PathVariable int organizationId,Integer page){
 		Organization organization = memberService.getOrganizationById(organizationId);
+		if(page == null || page == 0){
+			page = 1;
+		}
 		if(null == organization){
 			model.addAttribute("errorMsg","未找到该组织");
 			return "error";
 		}
-		List<Member> memberList = memberService.getMemberList(organizationId,-1,-1);
+		PageResult pageResult = memberService.getMemberPage(organizationId,-1,-1,page,5);
+		//List<Member> memberList = memberService.getMemberList(organizationId,-1,-1);
+		List<Member> memberList = (List<Member>)pageResult.getContent();
+
 		model.addAttribute("memberList",memberList);
+		model.addAttribute("pageResult",pageResult);
 		model.addAttribute("organization",organization);
 		return "member/member-list";
 	}
